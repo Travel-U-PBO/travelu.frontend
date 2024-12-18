@@ -18,7 +18,9 @@
           alt="success"
           style="max-width: 150px; height: auto"
         />
-        <p class="text-h6">Verfikasi akun telah berhasil silahkan login.</p>
+        <p class="text-h6">
+          Selamat! Verfikasi akun telah berhasil, silahkan login.
+        </p>
       </div>
       <div class="text-center">
         <q-btn

@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md row justify-center">
+  <div class="q-pa-md row justify-center" v-if="!successRegist">
     <div class="col-md-6">
       <div class="text-center">
         <h3 class="text-h3">Sign Up</h3>
@@ -11,7 +11,6 @@
         <q-input
           v-model="fullName"
           label="Full Name"
-          :error-message="fullNameError"
           :rules="[
             (val) => !!val || 'Full name cannot be empty',
             (val) =>
@@ -69,7 +68,7 @@
       </div>
     </div>
   </div>
-  <VerifEmail v-if="successRegist" :email="laudadrakagmailcom" />
+  <VerifEmail v-if="successRegist" :email="email" />
 </template>
 
 <script>
@@ -90,7 +89,7 @@ export default {
     const password = ref("");
     const emailError = ref("");
     const passwordError = ref("");
-    const successRegist = ref(false);
+    const successRegist = ref(false); // Change this to ref(false)
 
     const onSubmit = async () => {
       emailError.value = "";
@@ -119,31 +118,56 @@ export default {
           "Password must contain at least one special character";
       }
 
-      if (true) {
-        const requestBody = {
-          name: fullName.value,
-          email: email.value,
-          password: password.value,
-          noTelp: "0", // Will be implicitly made into 0
-        };
-
-        try {
-          const response = await api.post(`pelanggans`, requestBody);
-          console.log("User  created successfully:", response.data);
-          // You can add further actions here, like redirecting the user or showing a success message
-        } catch (error) {
-          console.error("Error creating user:", error);
+      try {
+        const response = await api.get(`pelanggans`);
+        const pelanggans = response.data;
+        const existingEmail = pelanggans.find(
+          (pelanggan) => pelanggan.email === email.value
+        );
+        if (existingEmail) {
+          emailError.value = "Email sudah terdaftar";
           $q.notify({
             color: "negative",
             position: "top",
-            message: "Error creating user. Please try again.",
+            message: "Email sudah terdaftar",
             icon: "report_problem",
           });
+          return;
         }
+      } catch (error) {
+        console.error("Error fetching pelanggans:", error);
+      }
+      const requestBody = {
+        name: fullName.value,
+        email: email.value,
+        password: password.value,
+        noTelp: "0", // Will be implicitly made into 0
+      };
+
+      try {
+        const response = await api.post(`pelanggans`, requestBody);
+        console.log("User  created successfully:", response.data);
+        successRegist.value = true; // Update the state using .value
+        // You can add further actions here, like redirecting the user or showing a success message
+      } catch (error) {
+        console.error("Error creating user:", error);
+        $q.notify({
+          color: "negative",
+          position: "top",
+          icon: "report_problem",
+        });
       }
     };
 
-    return { fullName, email, password, emailError, passwordError, onSubmit };
+    return {
+      fullName,
+      email,
+      password,
+      emailError,
+      passwordError,
+      onSubmit,
+      successRegist,
+    }; // Don't forget to return successRegist
   },
 };
 </script>
