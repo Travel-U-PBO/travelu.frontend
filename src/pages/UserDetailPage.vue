@@ -18,3 +18,4 @@ export default {
 <style scoped>
 /* Add styles specific to IndexPage here if needed */
 </style>
+/* Halo */
