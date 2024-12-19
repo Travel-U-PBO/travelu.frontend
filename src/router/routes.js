@@ -48,6 +48,11 @@ const routes = [
     children: [{ path: "", component: () => import("pages/PassPage.vue") }],
   },
   {
+    path: "/verified",
+    component: () => import("layouts/LoginLayout.vue"),
+    children: [{ path: "", component: () => import("pages/VerifiedPage.vue") }],
+  },
+  {
     path: "/otp",
     component: () => import("layouts/OtpLayout.vue"),
     children: [{ path: "", component: () => import("pages/OtpPage.vue") }],

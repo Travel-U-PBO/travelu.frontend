@@ -9,7 +9,7 @@
         />
         <p class="text-h6 q-mx-xl q-px-xl">
           Pendaftaran akun berhasil, verifikasi telah dikirim ke alamat email
-          <span style="color: blue">laudadraka@gmail.com</span>
+          <span style="color: blue">{{ email }}</span>
         </p>
         <p class="text-h6 q-mx-xl q-px-xl">
           Silahkan untuk melalukan aktivasi.
@@ -24,22 +24,23 @@
         />
         <p class="text-h6">
           Pendaftaran akun berhasil, verifikasi telah dikirim ke email
-          <span style="color: blue">laudadraka@gmail.com</span>
+          <span style="color: blue">{{ email }}</span>
         </p>
         <p class="text-h6">Silahkan untuk melalukan aktivasi.</p>
       </div>
       <div class="text-center">
-        <q-btn
-          style="box-shadow: none; border-radius: 5px"
-          color="primary"
-          icon="keyboard_backspace"
-          label="Kembali ke halaman login"
-          class="q-px-xl"
-          type="submit"
-          @click="navigateToPage('login')"
-          unelevated
-        >
-        </q-btn>
+        <a href="/login">
+          <q-btn
+            style="box-shadow: none; border-radius: 5px"
+            color="primary"
+            icon="keyboard_backspace"
+            label="Kembali ke halaman login"
+            class="q-px-xl"
+            type="submit"
+            unelevated
+          >
+          </q-btn>
+        </a>
       </div>
     </div>
   </div>

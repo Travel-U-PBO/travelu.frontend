@@ -1,141 +1,89 @@
 <template>
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
-
-  <div class="container">
-    <h3>Itinerary Kami</h3>
-    <div class="row g-10">
-      <div class="col-md-3">
-        <div class="card h-100 d-flex flex-column">
-          <img src="public/jakarta.jpg" class="card-img-top" alt="Jakarta" />
-          <div class="card-body">
-            <h5 class="card-title">Jakarta</h5>
-          </div>
+  <div class="row justify-center q-pa-xl">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-12">
+          <h3><b>Temukan Berbagai Destinasi Wisata 🏨</b></h3>
         </div>
       </div>
-
-      <div class="col-md-3">
-        <div class="card h-100 d-flex flex-column">
-          <img src="public/semarang.jpg" class="card-img-top" alt="Semarang" />
-          <div class="card-body">
-            <h5 class="card-title">Semarang</h5>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="card h-100 d-flex flex-column">
-          <img src="public/bogor.jpg" class="card-img-top" alt="Bogor" />
-          <div class="card-body">
-            <h5 class="card-title">Bogor</h5>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="card h-100 d-flex flex-column">
-          <img src="public/bandung.jpg" class="card-img-top" alt="Bandung" />
-          <div class="card-body">
-            <h5 class="card-title">Bandung</h5>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="container">
-    <h3>Tujuan Destinasi</h3>
-    <div class="row g-4">
-      <div class="col-md-3">
-        <div class="card h-100 d-flex flex-column">
-          <img
-            src="public/dufan.jpg"
-            class="card-img-top"
-            alt="Dufan Taman Impian Ancol"
-          />
-          <div class="card-body">
-            <h5>Dufan Taman Impian Ancol</h5>
-            <p class="card-text">
-              Dufan (Dunia Fantasi) merupakan taman hiburan di Ancol, Jakarta,
-              yang menawarkan wahana seru dengan tema internasional seperti
-              Eropa, Amerika, dan Asia. Cocok untuk segala usia, Dufan menjadi
-              destinasi favorit rekreasi keluarga.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="card h-100 d-flex flex-column">
-          <img
-            src="public/lembang.jpg"
-            class="card-img-top"
-            alt="Lembang Park Zoo"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Lembang Park Zoo</h5>
-
-            <p class="card-text">
-              Lembang Park & Zoo adalah kebun binatang modern di Lembang,
-              Bandung, yang menawarkan koleksi satwa beragam, fasilitas
-              rekreasi, dan area bermain keluarga. Tempat ini juga dilengkapi
-              kafe unik dan wahana edukasi interaktif.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="card h-100 d-flex flex-column">
-          <img
-            src="public/kebun_raya.jpg"
-            class="card-img-top"
-            alt="Kebun Raya Bogor"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Kebun Raya Bogor</h5>
-            <p class="card-text">
-              Kebun Raya Bogor adalah taman botani yang memiliki koleksi ribuan
-              jenis tanaman dari seluruh dunia. Tempat ini terkenal sebagai
-              pusat penelitian, wisata edukasi, dan rekreasi alam.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3">
-        <div class="card h-100 d-flex flex-column">
-          <img
-            src="public/lawang_sewu.jpg"
-            class="card-img-top"
-            alt="Museum Lawang Sewu"
-          />
-          <div class="card-body">
-            <h5 class="card-title">Museum Lawang Sewu</h5>
-            <p class="card-text">
-              Museum Lawang Sewu di Semarang adalah bangunan bersejarah dengan
-              arsitektur kolonial Belanda yang ikonik. Dulunya kantor perusahaan
-              kereta api, kini menjadi destinasi wisata edukasi yang sarat
-              cerita sejarah dan budaya.
-            </p>
-          </div>
+      <div class="col-12 row justify-center">
+        <div
+          class="col-md-3 col-sm-4 q-pa-sm"
+          v-for="destinasi in DestinasiList.slice(0, 4)"
+          :key="destinasi.id"
+        >
+          <a
+            :href="`/destinasi/${destinasi.id}/${toKebabCase(destinasi.name)}`"
+            style="text-decoration: none; color: inherit; user-select: none"
+          >
+            <q-card
+              class="my-card zoom-container"
+              style="
+                transition: transform 0.2s;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                box-shadow: none; /* No shadow by default */
+              "
+              v-ripple
+            >
+              <q-img src="https://via.placeholder.com/300x225"> </q-img>
+              <q-card-section>
+                <h5 style="margin: 0; padding: 0">
+                  {{ destinasi.name }}
+                </h5>
+                <h6 style="margin: 0; padding: 0">
+                  {{ destinasi.kota }}
+                </h6>
+                <p style="margin: 0; padding: 0">
+                  {{ truncateDescription(destinasi.deskripsi) }}
+                </p>
+              </q-card-section>
+            </q-card>
+          </a>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: "DestinasiWisata",
-  // Tambahkan data, props, methods jika diperlukan
+<script setup>
+import { ref } from "vue";
+const props = defineProps({
+  DestinasiList: Array,
+});
+
+const hover = ref(false);
+const truncateDescription = (description) => {
+  const words = description.split(" ");
+  return words.length > 20 ? words.slice(0, 20).join(" ") + "..." : description;
+};
+
+// Function to convert a string to kebab-case
+const toKebabCase = (str) => {
+  return str
+    .toLowerCase() // Convert to lowercase
+    .replace(/\s+/g, "-") // Replace spaces with hyphens
+    .replace(/[^\w\-]+/g, "") // Remove all non-word chars
+    .replace(/\-\-+/g, "-") // Replace multiple hyphens with a single hyphen
+    .replace(/^-+/, "") // Trim hyphens from start
+    .replace(/-+$/, ""); // Trim hyphens from end
 };
 </script>
 
 <style scoped>
-.card-body {
-  min-height: 200px; /* Atur tinggi minimum sesuai kebutuhan */
+.zoom-container {
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for both transform and box-shadow */
+}
+
+.zoom-container:hover {
+  transform: scale(1.05); /* Zoom in slightly */
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle box-shadow on hover */
+}
+
+.zoom-container:active {
+  transform: scale(0.98); /* Slightly reduce the scale */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduce the shadow to create a pressed effect */
 }
 </style>
