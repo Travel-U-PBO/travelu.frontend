@@ -12,29 +12,10 @@
             {{ formatDate(date) }} | {{ passengerCount }} Penumpang
           </span>
         </div>
-
-        <div
-          class="col-5"
-          style="display: flex; justify-content: flex-end; position: relative"
-        >
-          <br />
-          <div class="dropdown-container">
-            <button class="dropdown-btn" @click="toggleDropdown">
-              Ganti Destinasi
-              <span class="dropdown-arrow"></span>
-            </button>
-            <ul v-if="isOpen" class="dropdown-menu">
-              <li class="dropdown-item">Option 1</li>
-              <li class="dropdown-item">Option 2</li>
-              <li class="dropdown-item">Option 3</li>
-            </ul>
-          </div>
-        </div>
       </div>
 
       <hr class="row" style="border: 1px solid black; margin: 10px 0" />
 
-      <!-- Select Departure Time -->
       <div
         class="row q-my-sm"
         style="
@@ -47,63 +28,6 @@
         @mouseover="hover = true"
         @mouseout="hover = false"
       >
-        <!-- Section 1 -->
-        <div class="row q-my-sm q-mx-lg q-pb-md" style="width: 100%">
-          <div class="col-6">
-            <div class="row q-pb-sm">
-              <img
-                src="https://cdn4.iconfinder.com/data/icons/delivery-shipping-4/32/delivery-25-512.png"
-                alt="BCA Mobile Logo"
-                style="height: 2rem; width: 2rem"
-              />
-              <span style="font-weight: bold">Travel-U</span>
-            </div>
-            <div class="value" style="font-size: 1.1rem">
-              07.00 Pool {{ departureLabel.name }}
-            </div>
-            <br />
-            <div class="value" style="font-size: 1rem">3j 0m</div>
-            <br />
-            <div class="value" style="font-size: 1.1rem">
-              07.00 Pool {{ destinationLabel.name }}
-            </div>
-          </div>
-          <div
-            class="col-6 text-right"
-            style="
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-            "
-          >
-            <span class="value" style="font-size: 1rem">Rp 150.000/seat</span>
-            <span class="value" style="font-size: 1rem">8 Capacity</span>
-            <div class="row justify-end">
-              <q-btn color="primary" label="Pesan Sekarang!" size="lg" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div
-        class="row q-my-sm"
-        style="
-          font-size: 1.2rem;
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-          border-radius: 10px;
-        "
-      >
-        <!-- Section 1 -->
-        <div
-          class="row q-my-sm q-mx-lg q-pb-sm"
-          style="width: 100%; display: flex; justify-content: center"
-        >
-          <div class="text-center" style="width: 75%; font-weight: 500">
-            Anda sudah mencapai batas hasil dari pencarian, silahkan lakukan
-            pencarian kembali di hari atau rute berbeda untuk mendapatkan lebih
-            banyak keberangkatan
-          </div>
-        </div>
       </div>
     </div>
   </div>
