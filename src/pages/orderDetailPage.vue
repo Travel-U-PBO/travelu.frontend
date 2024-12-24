@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import OrderTicketContent from "src/components/OrderPage/orderDetailContent.vue";
+import orderDetailContent from "src/components/OrderPage/orderDetailContent.vue";
 
 export default {
   name: "orderDetailPage",
