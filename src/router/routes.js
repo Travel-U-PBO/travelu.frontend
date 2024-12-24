@@ -34,6 +34,10 @@ const routes = [
         path: "userdetail",
         component: () => import("pages/UserDetailPage.vue"),
       },
+      {
+        path: "orderdetail",
+        component: () => import("pages/orderDetailPage.vue"),
+      },
     ],
   },
   {
