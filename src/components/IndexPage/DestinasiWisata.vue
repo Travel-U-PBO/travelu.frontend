@@ -8,7 +8,7 @@
       </div>
       <div class="col-12 row justify-center">
         <div
-          class="col-md-3 col-sm-4 q-pa-sm"
+          class="col-md-3 col-sm-6 q-pa-sm"
           v-for="destinasi in DestinasiList.slice(0, 4)"
           :key="destinasi.id"
         >
@@ -27,7 +27,10 @@
               "
               v-ripple
             >
-              <q-img src="https://via.placeholder.com/300x225"> </q-img>
+              <q-img
+                :src="destinasi.img"
+                style="height: 25vh; object-fit: cover"
+              ></q-img>
               <q-card-section>
                 <h5 style="margin: 0; padding: 0">
                   {{ destinasi.name }}

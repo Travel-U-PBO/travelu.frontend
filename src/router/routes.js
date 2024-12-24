@@ -7,6 +7,10 @@ const routes = [
       { path: "book", component: () => import("pages/IndexPage.vue") },
       { path: "complain", component: () => import("pages/ComplainPage.vue") },
       {
+        path: "complain/:id",
+        component: () => import("pages/CheckComplainPage.vue"),
+      },
+      {
         path: "paymentmethod",
         component: () => import("pages/PaymentMethodPage.vue"),
       },

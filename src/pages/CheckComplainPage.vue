@@ -1,18 +1,18 @@
 <template>
   <q-page>
     <div class="page">
-      <ComplainContent class="content-infinite" />
+      <CheckComplain class="content-infinite" />
     </div>
   </q-page>
 </template>
 
 <script>
-import ComplainContent from "src/components/ComplainPage/ComplainContent.vue";
+import CheckComplain from "src/components/ComplainPage/CheckComplain.vue";
 
 export default {
-  name: "ComplainPage",
+  name: "CheckComplainPage",
   components: {
-    ComplainContent,
+    CheckComplain,
   },
 };
 </script>
