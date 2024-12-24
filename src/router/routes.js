@@ -1,7 +1,7 @@
 const routes = [
   {
     path: "/",
-    component: () => import("layouts/MainLayout.vue"),
+    component: () => import("layouts/UnauthenticatedLayout.vue"),
     children: [
       { path: "", component: () => import("pages/IndexPage.vue") },
       { path: "book", component: () => import("pages/IndexPage.vue") },
@@ -9,6 +9,10 @@ const routes = [
       {
         path: "complain/:id",
         component: () => import("pages/CheckComplainPage.vue"),
+      },
+      {
+        path: "itinerari/:id",
+        component: () => import("pages/ItinerariPage.vue"),
       },
       {
         path: "paymentmethod",
@@ -48,7 +52,13 @@ const routes = [
   {
     path: "/register",
     component: () => import("layouts/LoginLayout.vue"),
-    children: [{ path: "", component: () => import("pages/RegisterPage.vue") }],
+    children: [
+      {
+        path: "",
+        component: () =>
+          import("src/auth/pages/IdentityPasswordRegisterPage.vue"),
+      },
+    ],
   },
   {
     path: "/password",

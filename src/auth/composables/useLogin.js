@@ -1,8 +1,8 @@
-import { useRouter } from 'vue-router'
-import { useIdentityPasswordLogin, useAuthState } from '@vueauth/core'
+import { useRouter } from "vue-router";
+import { useIdentityPasswordLogin, useAuthState } from "@vueauth/core";
 
 export default () => {
-  const router = useRouter()
+  const router = useRouter();
   const {
     form,
     loading,
@@ -13,20 +13,20 @@ export default () => {
     login,
     isReauthenticating,
     resetForm,
-    resetErrors
-  } = useIdentityPasswordLogin()
-  const { user } = useAuthState()
+    resetErrors,
+  } = useIdentityPasswordLogin();
+  const { user } = useAuthState();
 
-  async function onLoginClicked () {
-    resetErrors()
-    await login()
+  async function onLoginClicked() {
+    resetErrors();
+    await login();
     if (!hasErrors.value) {
-      router.push({ name: 'dashboard' })
+      router.push({ name: "dashboard" });
     }
   }
 
-  function onForgotPasswordClicked () {
-    router.push({ name: 'auth.requestPasswordReset' })
+  function onForgotPasswordClicked() {
+    router.push({ name: "auth.requestPasswordReset" });
   }
 
   /**
@@ -34,9 +34,9 @@ export default () => {
    * This function prefills the email if possible,
    * thus saving the user from typing it in
    */
-  function attemptSetEmailOnForm () {
-    if (typeof form.value.email === 'string' && user.value?.email) {
-      form.value.email = user.value.email
+  function attemptSetEmailOnForm() {
+    if (typeof form.value.email === "string" && user.value?.email) {
+      form.value.email = user.value.email;
     }
   }
 
@@ -52,6 +52,6 @@ export default () => {
     login,
     resetForm,
     isReauthenticating,
-    attemptSetEmailOnForm
-  }
-}
+    attemptSetEmailOnForm,
+  };
+};

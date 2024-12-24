@@ -1,15 +1,15 @@
 <script setup>
-import AuthUpdatePasswordDialog from 'src/auth/components/dialogs/UpdatePasswordDialog.vue'
-import { ref } from 'vue'
-import AuthChangePasswordItem from 'src/auth/components/AccountMenu/ChangePasswordItem.vue'
-import AuthLogoutItem from 'src/auth/components/AccountMenu/LogoutItem.vue'
+import AuthUpdatePasswordDialog from "src/auth/components/dialogs/UpdatePasswordDialog.vue";
+import { ref } from "vue";
+import AuthChangePasswordItem from "src/auth/components/AccountMenu/ChangePasswordItem.vue";
+import AuthLogoutItem from "src/auth/components/AccountMenu/LogoutItem.vue";
 
-const showUpdatePasswordDialog = ref(false)
+const showUpdatePasswordDialog = ref(false);
 </script>
 
 <template>
-  <q-menu auto-close>
-    <q-list>
+  <q-menu transition-show="jump-down" transition-hide="jump-up">
+    <q-list style="min-width: 100px">
       <AuthLogoutItem />
       <AuthChangePasswordItem @click="showUpdatePasswordDialog = true" />
     </q-list>

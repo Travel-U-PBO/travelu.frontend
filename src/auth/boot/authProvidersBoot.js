@@ -1,6 +1,6 @@
-import { boot } from 'quasar/wrappers'
-import { AuthPlugin } from '@vueauth/core'
-import firebaseConfig from 'app/config/firebase'
+import { boot } from "quasar/wrappers";
+import { AuthPlugin } from "@vueauth/core";
+import firebaseConfig from "app/config/firebase";
 import {
   FirebasePlugin,
   useIdentityPasswordRegister,
@@ -13,20 +13,20 @@ import {
   useAuthenticatedRedirector,
   useFetchUser,
   usePasswordResetViaEmail,
-  useUpdatePassword
-} from '@vueauth/firebase'
+  useUpdatePassword,
+} from "@vueauth/firebase";
 
 export default boot(({ app }) => {
-  app.use(FirebasePlugin, firebaseConfig) // Be sure to update config/firebase to configure your app!
+  app.use(FirebasePlugin, firebaseConfig); // Be sure to update config/firebase to configure your app!
 
   app.use(AuthPlugin, {
-    default: 'firebase',
+    default: "firebase",
     providers: {
       firebase: {
         features: {
-          'identityPassword:register': useIdentityPasswordRegister,
-          'identityPassword:login': useIdentityPasswordLogin,
-          'identityPassword:logout': useIdentityPasswordLogout,
+          "identityPassword:register": useIdentityPasswordRegister,
+          "identityPassword:login": useIdentityPasswordLogin,
+          "identityPassword:logout": useIdentityPasswordLogout,
           unauthenticatedRedirector: useUnauthenticatedRedirector,
           authenticatedRedirector: useAuthenticatedRedirector,
           errorHandler: useHandlesErrors,
@@ -34,9 +34,9 @@ export default boot(({ app }) => {
           authState: useAuthState,
           authRedirector: useAuthRedirector,
           passwordResetViaEmail: usePasswordResetViaEmail,
-          updatePassword: useUpdatePassword
-        }
-      }
-    }
-  })
-})
+          updatePassword: useUpdatePassword,
+        },
+      },
+    },
+  });
+});

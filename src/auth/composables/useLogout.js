@@ -1,19 +1,19 @@
-import { useIdentityPasswordLogout } from '@vueauth/core'
-import { useRouter } from 'vue-router'
+import { useIdentityPasswordLogout } from "@vueauth/core";
+import { useRouter } from "vue-router";
 
 export default () => {
-  const router = useRouter()
+  const router = useRouter();
 
-  const { logout, loading } = useIdentityPasswordLogout()
+  const { logout, loading } = useIdentityPasswordLogout();
 
-  async function onLogoutClicked () {
-    await logout()
-    router.push('/login')
+  async function onLogoutClicked() {
+    await logout();
+    router.push("/login");
   }
 
   return {
     logout,
     loading,
-    onLogoutClicked
-  }
-}
+    onLogoutClicked,
+  };
+};
