@@ -13,6 +13,7 @@
         class="q-mr-lg"
         >Travel-U</span
       >
+
       <div>
         <a href="" :style="{ color: isScrolled ? 'black' : 'white' }">
           <q-btn flat size="1.3rem" style="font-weight: 400" label="Beranda" />

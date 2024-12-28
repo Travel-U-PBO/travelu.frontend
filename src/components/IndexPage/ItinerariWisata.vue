@@ -26,10 +26,7 @@
               "
               v-ripple
             >
-              <q-img
-                src="https://via.placeholder.com/300x225"
-                :style="{ height: '200px' }"
-              >
+              <q-img :src="itinerary.img" :style="{ height: '200px' }">
                 <div
                   class="absolute-top text-h6 q-p-md"
                   style="background-color: rgba(0, 0, 0, 0.5); color: white"

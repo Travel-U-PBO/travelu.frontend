@@ -188,7 +188,7 @@ const groupedCabangOptions = computed(() => {
       });
     }
   });
-  console.log(options);
+  console.log(router);
   return options;
 });
 

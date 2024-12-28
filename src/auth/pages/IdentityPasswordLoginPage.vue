@@ -3,9 +3,14 @@ import AuthLoginCard from "src/auth/components/LoginCard.vue";
 </script>
 
 <template>
-  <div class="flex flex-center" style="min-height: 100vh" padding>
-    <div class="text-center">
-      <h5 class="q-mb-md">Sign In</h5>
+  <div class="q-pa-md row justify-center">
+    <div class="col-md-6">
+      <div class="text-center">
+        <h3 class="text-h3">Sign In</h3>
+        <h5 class="text-h5">
+          Please fill up your detail to access your account
+        </h5>
+      </div>
       <AuthLoginCard />
       <q-btn
         class="full-width q-mt-md"
@@ -14,16 +19,12 @@ import AuthLoginCard from "src/auth/components/LoginCard.vue";
         flat
         :to="{ name: 'auth.requestPasswordReset' }"
       />
+      <div class="text-center q-mt-md">
+        <h5 class="text-h12">
+          Don't have an account?
+          <a href="/register" class="text-red">Sign up</a>
+        </h5>
+      </div>
     </div>
-  </div>
-  <div class="absolute-top-right q-pa-md">
-    <div>Need an account?</div>
-    <q-btn
-      no-caps
-      label="register"
-      flat
-      class="full-width"
-      :to="{ name: 'auth.register' }"
-    />
   </div>
 </template>

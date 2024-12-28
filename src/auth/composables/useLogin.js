@@ -21,7 +21,7 @@ export default () => {
     resetErrors();
     await login();
     if (!hasErrors.value) {
-      router.push({ name: "dashboard" });
+      router.push({ path: "/" });
     }
   }
 

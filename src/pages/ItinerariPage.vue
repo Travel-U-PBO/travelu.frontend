@@ -1,13 +1,18 @@
 <template>
   <q-page>
     <div class="page">
-      <ItinerariContent />
+      <ItinerariContent
+        :Itinerari="Itinerari"
+        v-if="loadedItinerari"
+        class="content q-pt-xl"
+      />
     </div>
   </q-page>
 </template>
 
 <script>
 import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import { api } from "boot/axios";
 import ItinerariContent from "src/components/ItinerariPage/ItinerariContent.vue";
 
@@ -16,79 +21,50 @@ export default {
   components: {
     ItinerariContent,
   },
-  // setup() {
-  //   const loadedKota = ref(false);
-  //   const loadedCabang = ref(false);
-  //   const loadedItinerari = ref(false);
-  //   const loadedDestinasi = ref(false);
-  //   const KotaList = ref([]);
-  //   const CabangList = ref([]);
-  //   const ItinerariList = ref([]);
-  //   const DestinasiList = ref([]);
+  setup() {
+    const loadedItinerari = ref(false);
+    const Itinerari = ref(null);
+    //   const loadedDestinasi = ref(false);
+    //   const DestinasiList = ref([]);
 
-  //   function loadKota() {
-  //     api
-  //       .get("/kotas")
-  //       .then((response) => {
-  //         KotaList.value = response.data;
-  //         loadedKota.value = true; // Corrected variable name
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching Kota list:", error); // Error handling
-  //       });
-  //   }
-  //   function loadCabang() {
-  //     api
-  //       .get("/cabangs")
-  //       .then((response) => {
-  //         CabangList.value = response.data;
-  //         loadedCabang.value = true; // Corrected variable name
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching Cabang list:", error); // Error handling
-  //       });
-  //   }
-  //   function loadItinerari() {
-  //     api
-  //       .get("/itineraris")
-  //       .then((response) => {
-  //         ItinerariList.value = response.data;
-  //         loadedItinerari.value = true; // Corrected variable name
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching Cabang list:", error); // Error handling
-  //       });
-  //   }
-  //   function loadDestinasi() {
-  //     api
-  //       .get("/destinasiItineraris")
-  //       .then((response) => {
-  //         DestinasiList.value = response.data;
-  //         loadedDestinasi.value = true; // Corrected variable name
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching Cabang list:", error); // Error handling
-  //       });
-  //   }
+    function loadItinerari() {
+      const route = useRoute(); // Get the current route
+      const id = route.params.id;
+      api
+        .get(`/itineraris/${id}`)
+        .then((response) => {
+          Itinerari.value = response.data;
+          loadedItinerari.value = true; // Corrected variable name
+          console.log(Itinerari.value);
+        })
+        .catch((error) => {
+          console.error("Error fetching Cabang list:", error); // Error handling
+        });
+    }
+    //   function loadDestinasi() {
+    //     api
+    //       .get("/destinasiItineraris")
+    //       .then((response) => {
+    //         DestinasiList.value = response.data;
+    //         loadedDestinasi.value = true; // Corrected variable name
+    //       })
+    //       .catch((error) => {
+    //         console.error("Error fetching Cabang list:", error); // Error handling
+    //       });
+    //   }
 
-  //   onMounted(() => {
-  //     loadKota();
-  //     loadCabang();
-  //     loadItinerari();
-  //     loadDestinasi();
-  //   });
+    onMounted(() => {
+      loadItinerari();
+      // loadDestinasi();
+    });
 
-  //   return {
-  //     loadedKota,
-  //     loadedCabang,
-  //     loadedItinerari,
-  //     loadedDestinasi,
-  //     KotaList,
-  //     CabangList,
-  //     ItinerariList,
-  //     DestinasiList,
-  //   };
-  // },
+    return {
+      loadedItinerari,
+      // loadedDestinasi,
+      Itinerari,
+      // DestinasiList,
+    };
+  },
 };
 </script>
 
