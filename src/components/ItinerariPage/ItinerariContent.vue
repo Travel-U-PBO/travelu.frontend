@@ -1,74 +1,67 @@
 <template>
-  <div>
-    <div class="row">
-      <div class="col-4 text-left justify-center q-px-lg">
-        <q-img
-          :src="Itinerari.img"
-          style="max-height: 30vh; width: 100%; object-fit: cover"
-        />
-        <h2 class="text-center" style="font-weight: 400">
-          {{ Itinerari.title }}
-        </h2>
-      </div>
-      <div class="col-8 q-pl-xl">
-        <p class="value">
-          {{ Itinerari.deskripsi }}
-        </p>
-        <div>
-          <h5>List Destinasi</h5>
-          <div
-            v-for="destinasi in DestinasiList.slice(0, 4)"
-            :key="destinasi.id"
-          >
-            <div
-              class="row q-my-sm"
-              style="
-                font-size: 1.2rem;
-                border-radius: 10px;
-                transition: box-shadow 0.5s ease-in-out;
-                outline: 1px solid #0077b6;
-              "
-              :class="{ 'hover-effect': hover }"
-              @mouseover="hover = true"
-              @mouseout="hover = false"
-            >
-              <div
-                class="row q-my-sm q-mx-lg q-pb-md"
-                style="width: 100%; display: flex"
-              >
-                <div
-                  class="col-3 r d-flex align-items-center justify-content-center"
-                >
-                  <q-img
-                    :src="destinasi.img"
-                    style="
-                      width: 80%;
-                      height: auto;
-                      object-fit: cover;
-                      border-radius: 10px;
-                    "
-                  />
-                </div>
-                <div
-                  class="col-9 d-flex flex-column justify-content-between"
-                  style="height: 100%"
-                >
-                  <b>{{ destinasi.name }}</b>
-                  <p class="limit-lines">{{ destinasi.deskripsi }}</p>
-                  <span class="value" style="font-size: 1rem">{{
-                    destinasi.kota
-                  }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
+  <div class="container">
+    <div class="row d-flex justify-content-center align-items-center">
+      <q-card
+        class="my-card zoom-container"
+        style="
+          transition: transform 0.2s;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          box-shadow: none; /* No shadow by default */
+        "
+      >
+        <!-- Gambar Utama -->
+        <div class="col-4 text-left q-px-lg">
+          <q-img
+            :src="Itinerari.img"
+            style="max-height: 30vh; width: 100%; object-fit: cover"
+          />
+          <h2 class="text-center" style="font-weight: 400">
+            {{ Itinerari.title }}
+          </h2>
+          <h4 class="text-center" style="font-weight: 400"></h4>
+        </div>
 
-          <hr />
+        <!-- Deskripsi -->
+        <div
+          class="col-8 q-pl-xl"
+          style="display: flex; justify-content: center; align-items: center"
+        >
+          <div>
+            <p class="value">{{ Itinerari.deskripsi }}</p>
+            <hr />
+
+            <!-- Slider -->
+            <div class="col-12 row justify-center">
+              <q-carousel
+                swipeable
+                animated
+                arrows
+                navigation
+                infinite
+                class="full-width"
+                style="max-width: 600px; margin: auto"
+              >
+                <q-carousel-slide
+                  v-for="(destinasi, index) in Itinerari.ListDestinasi"
+                  :key="index"
+                  class="text-center"
+                >
+                  <q-card>
+                    <q-card-section>
+                      <h5>{{ destinasi }}</h5>
+                    </q-card-section>
+                  </q-card>
+                </q-carousel-slide>
+              </q-carousel>
+            </div>
+
+            <!-- Tombol Pesan -->
+            <q-btn class="btn btn-primary">Pesan sekarang</q-btn>
+          </div>
         </div>
-        <div class="text-right mt-3">
-          <q-btn class="btn btn-primary">Pesan sekarang</q-btn>
-        </div>
-      </div>
+      </q-card>
     </div>
   </div>
 </template>
