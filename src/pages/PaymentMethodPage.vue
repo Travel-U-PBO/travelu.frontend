@@ -1,6 +1,8 @@
 <template>
   <q-page>
-    <PaymentMethodContent />
+    <div class="page">
+      <PaymentMethodContent class="content q-pt-xl" />
+    </div>
   </q-page>
 </template>
 
@@ -15,6 +17,21 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 /* Add styles specific to IndexPage here if needed */
+.page {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  flex-direction: column;
+  align-items: CENTER;
+}
+.content {
+  max-width: 1400px;
+  width: 100%;
+}
+.content-infinite {
+  max-width: infinite;
+  width: 100%;
+}
 </style>

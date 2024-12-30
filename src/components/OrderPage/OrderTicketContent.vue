@@ -159,7 +159,7 @@ export default {
     // Access query parameters
     const departureId = route.query.departure;
     const destinationId = route.query.destination;
-    const passengerCount = 5;
+    const passengerCount = route.query.passengerCount;
     const date = ref(new Date(route.query.date));
 
     // Reactive properties to hold the fetched data

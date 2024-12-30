@@ -180,7 +180,11 @@
           </div>
         </form>
       </div>
-      <q-btn class="full-width q-mt-lg q-py-sm" color="primary">
+      <q-btn
+        class="full-width q-mt-lg q-py-sm"
+        color="primary"
+        @click="forwardData"
+      >
         <span style="font-size: 1rem">Pilih Metode Pembayaran</span>
       </q-btn>
     </div>
@@ -189,16 +193,40 @@
 
 <script>
 import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { api } from "boot/axios";
 
 export default {
   setup() {
     const route = useRoute();
+    const router = useRouter();
 
-    // Access query parameters
+    const fullName = ref("");
+    const telephone = ref("");
+    const email = ref("");
+    const address = ref("");
+    const passengerFullNames = ref(
+      Array(Number(route.query.passengerCount)).fill("")
+    );
+    const passengerTelephones = ref(
+      Array(Number(route.query.passengerCount)).fill("")
+    );
+    const passengerTitles = ref(
+      Array(Number(route.query.passengerCount)).fill("")
+    );
+    const passengerAddresses = ref(
+      Array(Number(route.query.passengerCount)).fill("")
+    );
+
+    const generateInvoiceNumber = () => {
+      return Math.floor(Math.random() * 0xffffffff)
+        .toString(16)
+        .padStart(8, "0");
+    };
+
     const departureId = route.query.departure;
     const destinationId = route.query.destination;
+    const jadwalId = route.query.jadwalId;
     const passengerCount = Number(route.query.passengerCount);
     const date = ref(new Date(route.query.date));
 
@@ -266,10 +294,69 @@ export default {
 
       return `${dayOfWeek}, ${day} ${month} ${year}`;
     };
+    const jadwalValue = ref(null); // Reactive variable to hold jadwal data
+
+    // Function to fetch jadwal data
+    const fetchJadwalData = async () => {
+      try {
+        const jadwalResponse = await api.get(`/jadwals/${jadwalId}`);
+        jadwalValue.value = jadwalResponse.data; // Store the response data
+      } catch (error) {
+        console.error("Error fetching jadwal data:", error);
+      }
+    };
+
+    const forwardData = async () => {
+      const noInvoice = generateInvoiceNumber();
+      const payload = {
+        id: 0, // Assuming this will auto-increment on the server
+        metode: "CASH", // Use the specific passenger's name
+        harga: Number(jadwalValue.value.hargaTiket) * passengerCount,
+        noInvoice: noInvoice, // Generate random invoice number
+      };
+      let pembayaranId = 0;
+
+      try {
+        // Send POST request to the pemesanans endpoint for each passenger
+        pembayaranId = await api.post("/pembayarans", payload);
+        // Handle the response if needed
+        console.log(`Response:`, pembayaranId.data);
+      } catch (error) {
+        console.error(`Error on creating pembayaran:`, error);
+      }
+
+      // Loop through each passenger and create a POST request for each
+
+      for (let i = 0; i < passengerCount; i++) {
+        console.log(passengerFullNames.value[i]);
+        const payload = {
+          id: 0, // Assuming this will auto-increment on the server
+          namaCustomer: passengerFullNames.value[i], // Use the specific passenger's name
+          statusPembayaran: "BELUM_BAYAR", // Default value
+          pelangganId: 1, // Assuming this is a static value for now
+          pembayaranId: pembayaranId.data, // Assuming this is a static value for now
+          noInvoice: noInvoice,
+          jadwalId: jadwalId, // Use the jadwalId from the query parameters
+        };
+        try {
+          // Send POST request to the pemesanans endpoint for each passenger
+          const response = await api.post("/pemesanans", payload);
+          // Handle the response if needed
+          console.log(`Response for passenger ${i + 1}:`, response.data);
+        } catch (error) {
+          console.error(`Error forwarding data for passenger ${i + 1}:`, error);
+        }
+      }
+      console.log(jadwalValue.value.hargaTiket);
+
+      // Optionally, navigate to another page or show a success message after all requests
+      router.push("/paymentmethod");
+    };
 
     // Fetch data when the component is mounted
     onMounted(() => {
       fetchData();
+      fetchJadwalData();
     });
 
     return {
@@ -282,6 +369,15 @@ export default {
       formatDate,
       hover,
       isOpen,
+      fullName,
+      telephone,
+      email,
+      address,
+      passengerFullNames,
+      passengerTelephones,
+      passengerTitles,
+      passengerAddresses,
+      forwardData,
     };
   },
 };
