@@ -1,13 +1,13 @@
 <template>
-  <div class="cover">
-    <div style="max-width: 1400px; width: 90%; margin: 0 auto">
+  <div class="cover" style="background-color: #0077b6">
+    <div style="max-width: 1400px; width: 90%; margin: 0 auto; color: white">
       <h2 class="q-mx-md">Click and Go!</h2>
       <form @submit.prevent="onSubmit">
         <div class="row">
           <div
             class="col-12 row q-mx-md"
             style="
-              background-color: #dbe9f6;
+              background-color: white;
               border-radius: 8px;
               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             "
@@ -211,7 +211,6 @@ const onSubmit = () => {
 
 <style scoped>
 .cover {
-  background-image: url("https://www.mylintas.co.id/assets/images/beranda/bg-reservasi.png");
   background-size: cover;
   width: 100%;
   padding: 20px 0;
