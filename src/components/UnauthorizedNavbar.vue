@@ -1,7 +1,7 @@
 <template>
   <q-header :class="{ scrolled: isScrolled }" elevated>
     <q-toolbar :style="toolbarStyle" class="q-pa-sm">
-      <a href="/">
+      <a href="/" class="q-pa-lg">
         <img
           :src="isScrolled ? blackLogo : whiteLogo"
           style="max-height: 7vh"
@@ -48,7 +48,11 @@
             label="register"
           />
         </a>
-        <a href="/login" :style="{ color: isScrolled ? 'black' : 'white' }">
+        <a
+          class="q-pr-lg"
+          href="/login"
+          :style="{ color: isScrolled ? 'black' : 'white' }"
+        >
           <q-btn
             flat
             size="1.3rem"

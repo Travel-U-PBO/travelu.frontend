@@ -37,6 +37,8 @@
       <!-- Select Departure Time -->
       <div
         class="row q-my-sm"
+        v-for="jadwal in jadwalList"
+        :key="jadwal.id"
         style="
           font-size: 1.2rem;
           border-radius: 10px;
@@ -48,7 +50,7 @@
         @mouseout="hover = false"
       >
         <!-- Section 1 -->
-        <div class="row q-my-sm q-mx-lg q-pb-md" style="width: 100%">
+        <div class="row q-my-sm q-mx-lg" style="width: 100%">
           <div class="col-6">
             <div class="row q-pb-sm">
               <img
@@ -59,13 +61,35 @@
               <span style="font-weight: bold">Travel-U</span>
             </div>
             <div class="value" style="font-size: 1.1rem">
-              07.00 Pool {{ departureLabel.name }}
+              {{ Math.floor(convertTimeToMinutes(jadwal.waktu) / 60) }}:{{
+                formatToTwoDigits(
+                  Math.floor(convertTimeToMinutes(jadwal.waktu) % 60)
+                )
+              }}
+              Pool
+              {{ departureLabel.name }}
             </div>
             <br />
-            <div class="value" style="font-size: 1rem">3j 0m</div>
+            <div class="value" style="font-size: 1rem">
+              {{ Math.floor(jadwal.durasi / 60) }}
+              j
+              {{ jadwal.durasi % 60 }} m
+            </div>
             <br />
-            <div class="value" style="font-size: 1.1rem">
-              07.00 Pool {{ destinationLabel.name }}
+            <div class="value" style="font-size: 1rem">
+              {{
+                Math.floor(
+                  (convertTimeToMinutes(jadwal.waktu) + jadwal.durasi) / 60
+                )
+              }}:{{
+                formatToTwoDigits(
+                  Math.floor(
+                    (convertTimeToMinutes(jadwal.waktu) + jadwal.durasi) % 60
+                  )
+                )
+              }}
+              Pool
+              {{ destinationLabel.name }}
             </div>
           </div>
           <div
@@ -76,10 +100,17 @@
               justify-content: space-between;
             "
           >
-            <span class="value" style="font-size: 1rem">Rp 150.000/seat</span>
+            <span class="value" style="font-size: 1rem"
+              >Rp {{ jadwal.hargaTiket }}/seat</span
+            >
             <span class="value" style="font-size: 1rem">8 Capacity</span>
             <div class="row justify-end">
-              <q-btn color="primary" label="Pesan Sekarang!" size="lg" />
+              <q-btn
+                color="primary"
+                label="Pesan Sekarang!"
+                size="lg"
+                @click="redirectToOrderDetail(jadwal.id)"
+              />
             </div>
           </div>
         </div>
@@ -111,17 +142,24 @@
 
 <script>
 import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router"; // Import useRouter
 import { api } from "boot/axios";
 
 export default {
   setup() {
     const route = useRoute();
-
+    const router = useRouter(); // Initialize the router
+    const convertTimeToMinutes = (timeString) => {
+      const [hours, minutes] = timeString.split(":").map(Number);
+      return hours * 60 + minutes; // Convert to total minutes
+    };
+    const formatToTwoDigits = (num) => {
+      return num < 10 ? `0${num}` : `${num}`;
+    };
     // Access query parameters
     const departureId = route.query.departure;
     const destinationId = route.query.destination;
-    const passengerCount = route.query.passengerCount;
+    const passengerCount = 5;
     const date = ref(new Date(route.query.date));
 
     // Reactive properties to hold the fetched data
@@ -132,6 +170,8 @@ export default {
 
     const hover = ref(false);
     const isOpen = ref(false);
+    const jadwalList = ref([]);
+    const loadedJadwal = ref(false);
 
     // Function to fetch data from the API
     const fetchData = async () => {
@@ -144,6 +184,16 @@ export default {
         ); // Assuming the kota ID is in the response
         departureKota.value = departureKotaResponse.data; // Assuming the response has a 'kota' field
 
+        const jadwalResponse = await api.get(`/jadwals`);
+        const filteredJadwalList = jadwalResponse.data.filter(
+          (jadwal) =>
+            jadwal.asalCabangId == departureId &&
+            jadwal.destinasiCabangId == destinationId
+        );
+
+        // Assign the filtered list to jadwalList
+        jadwalList.value = filteredJadwalList;
+
         // Fetch destination details
         const destinationResponse = await api.get(`/cabangs/${destinationId}`);
         destinationLabel.value = destinationResponse.data; // Assuming the response has a 'label' field
@@ -154,6 +204,20 @@ export default {
       } catch (error) {
         console.error("Error fetching data:", error);
       }
+    };
+
+    const redirectToOrderDetail = (jadwalId) => {
+      // Construct the new URL with parameters
+      router.push({
+        path: "/orderdetail",
+        query: {
+          departure: departureId,
+          destination: destinationId,
+          passengerCount: passengerCount,
+          date: date.value.toISOString(), // Convert date to ISO string if needed
+          jadwalId: jadwalId, // Add the clicked jadwal's ID
+        },
+      });
     };
 
     const formatDate = (date) => {
@@ -201,9 +265,13 @@ export default {
       destinationKota,
       passengerCount,
       date,
+      jadwalList,
       formatDate,
       hover,
       isOpen,
+      convertTimeToMinutes,
+      formatToTwoDigits,
+      redirectToOrderDetail, // Return the new method
     };
   },
 };

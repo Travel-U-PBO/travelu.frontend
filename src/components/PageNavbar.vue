@@ -1,7 +1,7 @@
 <template>
   <q-header :class="{ scrolled: isScrolled }" elevated>
     <q-toolbar :style="toolbarStyle" class="q-pa-sm">
-      <a href="/">
+      <a href="/" class="q-pl-xl">
         <img
           :src="isScrolled ? blackLogo : whiteLogo"
           style="max-height: 7vh"

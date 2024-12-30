@@ -17,18 +17,172 @@
       <hr class="row" style="border: 1px solid black; margin: 10px 0" />
 
       <div
-        class="row q-my-sm"
-        style="
-          font-size: 1.2rem;
-          border-radius: 10px;
-          transition: box-shadow 0.5s ease-in-out;
-          outline: 1px solid #0077b6;
-        "
-        :class="{ 'hover-effect': hover }"
-        @mouseover="hover = true"
-        @mouseout="hover = false"
+        class="row q-my-sm q-py-sm"
+        style="background-color: #1976d2; border-radius: 5px"
       >
+        <span
+          class="q-pl-lg"
+          style="color: white; font-weight: 400; font-size: 2rem"
+          >Data Pemesanan</span
+        >
       </div>
+
+      <div style="outline: 1px solid #0077b6; border-radius: 5px">
+        <div
+          class="row q-my-sm q-py-sm"
+          style="background-color: #1976d2; border-radius: 5px"
+        >
+          <span
+            class="q-pl-lg"
+            style="color: white; font-weight: 400; font-size: 1.5rem"
+            >Masukkan data anda dengan tepat</span
+          >
+        </div>
+
+        <form class="q-px-xl q-py-xl" style="font-size: 1rem">
+          <div class="q-py-sm">
+            <span>Nama Pemesan:</span>
+            <input
+              type="text"
+              id="fullName"
+              name="fullName"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+              "
+            />
+          </div>
+          <div class="q-py-sm">
+            <span>Nomor Telepon:</span>
+            <input
+              type="text"
+              id="telephone"
+              name="telephone"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+              "
+            />
+          </div>
+          <div class="q-py-sm">
+            <span>Email:</span>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+              "
+            />
+          </div>
+          <div class="q-py-sm">
+            <span>Alamat Lengkap:</span>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+              "
+            />
+          </div>
+        </form>
+      </div>
+
+      <div
+        style="outline: 1px solid #0077b6; border-radius: 5px"
+        v-for="index in passengerCount"
+        :key="index"
+      >
+        <div
+          class="row q-my-sm q-py-sm"
+          style="background-color: #1976d2; border-radius: 5px"
+        >
+          <span
+            class="q-pl-lg"
+            style="color: white; font-weight: 400; font-size: 1.5rem"
+            >Data Pelanggan Nomor {{ index }}</span
+          >
+        </div>
+        <form class="q-px-xl q-pb-sm row" style="font-size: 1rem">
+          <div class="col q-pr-sm">
+            <div class="q-py-sm">
+              <span>Nama Pemesan:</span>
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                style="
+                  width: 100%;
+                  padding: 10px;
+                  border: 1px solid #ccc;
+                  border-radius: 5px;
+                "
+              />
+            </div>
+            <div class="q-py-sm">
+              <span>Nomor Telepon:</span>
+              <input
+                type="text"
+                id="telephone"
+                name="telephone"
+                style="
+                  width: 100%;
+                  padding: 10px;
+                  border: 1px solid #ccc;
+                  border-radius: 5px;
+                "
+              />
+            </div>
+          </div>
+          <div class="col q-pl-sm">
+            <div class="q-py-sm">
+              <span>Panggilan:</span>
+              <select
+                id="title"
+                name="title"
+                style="
+                  width: 100%;
+                  padding: 10px;
+                  border: 1px solid #ccc;
+                  border-radius: 5px;
+                "
+              >
+                <option value="" disabled selected>Pilih Panggilan</option>
+                <option value="Tn.">Tn.</option>
+                <option value="Ny.">Ny.</option>
+              </select>
+            </div>
+            <div class="q-py-sm">
+              <span>Alamat Lengkap:</span>
+              <input
+                type="text"
+                id="address"
+                name="address"
+                style="
+                  width: 100%;
+                  padding: 10px;
+                  border: 1px solid #ccc;
+                  border-radius: 5px;
+                "
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+      <q-btn class="full-width q-mt-lg q-py-sm" color="primary">
+        <span style="font-size: 1rem">Pilih Metode Pembayaran</span>
+      </q-btn>
     </div>
   </div>
 </template>
@@ -45,7 +199,7 @@ export default {
     // Access query parameters
     const departureId = route.query.departure;
     const destinationId = route.query.destination;
-    const passengerCount = route.query.passengerCount;
+    const passengerCount = Number(route.query.passengerCount);
     const date = ref(new Date(route.query.date));
 
     // Reactive properties to hold the fetched data
