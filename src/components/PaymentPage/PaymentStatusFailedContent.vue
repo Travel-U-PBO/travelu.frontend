@@ -2,18 +2,20 @@
   <div
     class="row q-my-sm"
     style="
-      background-color: #f0f0f0;
       font-size: 1.2rem;
       margin-left: 30px;
       margin-right: 30px;
       margin-top: 100px;
       margin-bottom: 100px;
+      border: 1px solid #0077b6;
+      border-radius: 5px;
+      padding: 10px;
     "
   >
     <div
       class="row q-my-sm"
       style="
-        background-color: #d9d9d9;
+        background-color: #0077b6;
         width: 100%;
         margin-left: 30px;
         margin-right: 30px;
@@ -24,14 +26,13 @@
       <div
         class="col q-my-sm"
         style="
-          background-color: #d9d9d9;
           width: 100%;
           margin-left: 15px;
           margin-right: 15px;
           text-align: center;
         "
       >
-        <div class="value" style="font-size: 1.5rem">
+        <div class="value" style="font-size: 1.5rem; color: white">
           Payment Status Details
         </div>
       </div>
@@ -39,7 +40,6 @@
     <div
       class="row q-my-sm"
       style="
-        background-color: #f0f0f0;
         width: 100%;
         margin-left: 30px;
         margin-right: 30px;
@@ -49,12 +49,7 @@
     >
       <div
         class="col q-my-sm"
-        style="
-          background-color: #f0f0f0;
-          width: 100%;
-          margin-left: 15px;
-          margin-right: 15px;
-        "
+        style="width: 100%; margin-left: 15px; margin-right: 15px"
       >
         <div class="span" style="font-weight: bold">Ticket Code :</div>
         <div class="value" style="font-size: 0.9rem">#6DV74BD</div>
@@ -65,12 +60,7 @@
       </div>
       <div
         class="col q-my-sm"
-        style="
-          background-color: #f0f0f0;
-          width: 100%;
-          margin-left: 15px;
-          margin-right: 15px;
-        "
+        style="width: 100%; margin-left: 15px; margin-right: 15px"
       >
         <div class="span" style="font-weight: bold">Total Payment :</div>
         <div class="value" style="font-size: 0.9rem">Rp 150,000</div>
@@ -81,12 +71,7 @@
       </div>
       <div
         class="col q-my-sm"
-        style="
-          background-color: #f0f0f0;
-          width: 100%;
-          margin-left: 15px;
-          margin-right: 15px;
-        "
+        style="width: 100%; margin-left: 15px; margin-right: 15px"
       >
         <div class="span" style="font-weight: bold">Payment Status :</div>
         <div class="value" style="font-size: 0.9rem">Failed</div>
@@ -99,7 +84,7 @@
     <div
       class="row q-my-sm"
       style="
-        background-color: #d9d9d9;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         width: 100%;
         margin-left: 30px;
         margin-right: 30px;
@@ -126,7 +111,7 @@
     <div
       class="row q-my-sm"
       style="
-        background-color: #d9d9d9;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         width: 100%;
         margin-left: 30px;
         margin-right: 30px;
@@ -162,7 +147,7 @@
     <div
       class="row q-my-sm"
       style="
-        background-color: #d9d9d9;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         width: 100%;
         margin-left: 30px;
         margin-right: 30px;

@@ -33,32 +33,61 @@
             <hr />
 
             <!-- Slider -->
-            <div class="col-12 row justify-center">
-              <q-carousel
-                swipeable
-                animated
-                arrows
-                navigation
-                infinite
-                class="full-width"
-                style="max-width: 600px; margin: auto"
+
+            <div class="col-12 row justify-center" v-if="loadedDestinasi">
+              <div
+                class="col-md-3 col-sm-6 q-pa-sm"
+                v-for="destinasi in DestinasiList.slice(0, 4)"
+                :key="destinasi.id"
               >
-                <q-carousel-slide
-                  v-for="(destinasi, index) in Itinerari.ListDestinasi"
-                  :key="index"
-                  class="text-center"
+                <a
+                  :href="`/destinasi/${destinasi.id}/`"
+                  style="
+                    text-decoration: none;
+                    color: inherit;
+                    user-select: none;
+                  "
                 >
-                  <q-card>
+                  <q-card
+                    class="my-card zoom-container"
+                    style="
+                      transition: transform 0.2s;
+                      height: 100%;
+                      display: flex;
+                      flex-direction: column;
+                      box-shadow: none; /* No shadow by default */
+                    "
+                    v-ripple
+                  >
+                    <q-img
+                      :src="destinasi.img"
+                      style="height: 25vh; object-fit: cover"
+                    ></q-img>
                     <q-card-section>
-                      <h5>{{ destinasi }}</h5>
+                      <h5 style="margin: 0; padding: 0">
+                        {{ destinasi.name }}
+                      </h5>
+                      <h6 style="margin: 0; padding: 0">
+                        {{ destinasi.kota }}
+                      </h6>
+                      <p style="margin: 0; padding: 0">
+                        {{ destinasi.deskripsi }}
+                      </p>
                     </q-card-section>
                   </q-card>
-                </q-carousel-slide>
-              </q-carousel>
+                </a>
+              </div>
             </div>
-
             <!-- Tombol Pesan -->
-            <q-btn class="btn btn-primary">Pesan sekarang</q-btn>
+            <div
+              class="btn btn-primary"
+              style="margin-top: 20px; margin-bottom: 40px"
+            >
+              <q-btn
+                style="background-color: #0077b6; width: 100%; color: white"
+                >Pesan sekarang</q-btn
+              >
+            </div>
           </div>
         </div>
       </q-card>
