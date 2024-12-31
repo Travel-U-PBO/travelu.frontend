@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-lg flex flex-center">
-    <div class="col q-pt-lg" style="width: 90%">
+    <div class="col q-pt-lg" style="width: 90%; background-color: ">
       <!-- Informasi Utama -->
       <div class="row" style="font-size: 1.5rem">
         <div class="col-7 text-align text-black">

@@ -34,7 +34,16 @@
             <div>
               <hr />
             </div>
-            <q-btn class="btn btn-primary">Pesan sekarang</q-btn>
+            <!-- Tombol Pesan -->
+            <div
+              class="btn btn-primary"
+              style="margin-top: 20px; margin-bottom: 40px"
+            >
+              <q-btn
+                style="background-color: #0077b6; width: 100%; color: white"
+                >Pesan sekarang</q-btn
+              >
+            </div>
           </div>
         </div>
       </q-card>
