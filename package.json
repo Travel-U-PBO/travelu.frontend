@@ -14,15 +14,17 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
+    "@vueauth/firebase": "^1.0.0-alpha.20",
     "@vueauth/strapi": "^1.0.0-alpha.6",
     "axios": "^1.2.1",
+    "crypto-js": "^4.2.0",
     "firebase": "^9.0.0",
     "pinia": "^2.3.0",
     "quasar": "^2.16.0",
+    "uuid": "^11.0.3",
     "vue": "^3.4.18",
     "vue-router": "^4.0.12",
-    "vuex": "^4.1.0",
-    "@vueauth/firebase": "^1.0.0-alpha.20"
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@quasar/app-vite": "^1.9.0",

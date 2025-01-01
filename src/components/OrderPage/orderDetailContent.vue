@@ -44,8 +44,9 @@
             <span>Nama Pemesan:</span>
             <input
               type="text"
-              id="fullName"
-              name="fullName"
+              id="ordererFullName"
+              name="ordererFullName"
+              v-model="fullName"
               style="
                 width: 100%;
                 padding: 10px;
@@ -58,8 +59,9 @@
             <span>Nomor Telepon:</span>
             <input
               type="text"
-              id="telephone"
-              name="telephone"
+              id="ordererTelephone"
+              name="ordererTelephone"
+              v-model="telephone"
               style="
                 width: 100%;
                 padding: 10px;
@@ -72,8 +74,9 @@
             <span>Email:</span>
             <input
               type="text"
-              id="email"
-              name="email"
+              id="ordererEmail"
+              name="ordererEmail"
+              v-model="email"
               style="
                 width: 100%;
                 padding: 10px;
@@ -86,8 +89,9 @@
             <span>Alamat Lengkap:</span>
             <input
               type="text"
-              id="address"
-              name="address"
+              id="ordererAddress"
+              name="ordererAddress"
+              v-model="address"
               style="
                 width: 100%;
                 padding: 10px;
@@ -120,8 +124,9 @@
               <span>Nama Pemesan:</span>
               <input
                 type="text"
-                id="fullName"
-                name="fullName"
+                :id="'fullName' + index"
+                :name="'fullName' + index"
+                v-model="passengerFullNames[index - 1]"
                 style="
                   width: 100%;
                   padding: 10px;
@@ -134,8 +139,9 @@
               <span>Nomor Telepon:</span>
               <input
                 type="text"
-                id="telephone"
-                name="telephone"
+                :id="'telephone' + index"
+                :name="'telephone' + index"
+                v-model="passengerTelephones[index - 1]"
                 style="
                   width: 100%;
                   padding: 10px;
@@ -149,8 +155,9 @@
             <div class="q-py-sm">
               <span>Panggilan:</span>
               <select
-                id="title"
-                name="title"
+                :id="'title' + index"
+                :name="'title' + index"
+                v-model="passengerTitles[index - 1]"
                 style="
                   width: 100%;
                   padding: 10px;
@@ -167,8 +174,9 @@
               <span>Alamat Lengkap:</span>
               <input
                 type="text"
-                id="address"
-                name="address"
+                :id="'address' + index"
+                :name="'address' + index"
+                v-model="passengerAddresses[index - 1]"
                 style="
                   width: 100%;
                   padding: 10px;
@@ -235,6 +243,7 @@ export default {
     const destinationLabel = ref("");
     const departureKota = ref("");
     const destinationKota = ref("");
+    let pembayaranId = 0;
 
     const hover = ref(false);
     const isOpen = ref(false);
@@ -310,11 +319,13 @@ export default {
       const noInvoice = generateInvoiceNumber();
       const payload = {
         id: 0, // Assuming this will auto-increment on the server
-        metode: "CASH", // Use the specific passenger's name
         harga: Number(jadwalValue.value.hargaTiket) * passengerCount,
-        noInvoice: noInvoice, // Generate random invoice number
+        noInvoice: noInvoice,
+        name: fullName.value, // Use the reactive fullName
+        noTelp: telephone.value, // Use the reactive telephone
+        email: email.value, // Use the reactive email
+        address: address.value, // Use the reactive address
       };
-      let pembayaranId = 0;
 
       try {
         // Send POST request to the pemesanans endpoint for each passenger
@@ -329,19 +340,21 @@ export default {
 
       for (let i = 0; i < passengerCount; i++) {
         console.log(passengerFullNames.value[i]);
-        const payload = {
+        const passengerPayload = {
           id: 0, // Assuming this will auto-increment on the server
           namaCustomer: passengerFullNames.value[i], // Use the specific passenger's name
           statusPembayaran: "BELUM_BAYAR", // Default value
           pelangganId: 1, // Assuming this is a static value for now
-          pembayaranId: pembayaranId.data, // Assuming this is a static value for now
+          pembayaranId: pembayaranId.data, // Use the pembayaranId from the previous request
           noInvoice: noInvoice,
           jadwalId: jadwalId, // Use the jadwalId from the query parameters
+          noTelp: passengerTelephones.value[i], // Include passenger's telephone
+          panggilan: passengerTitles.value[i], // Include passenger's title
+          alamat: passengerAddresses.value[i], // Include passenger's address
         };
         try {
           // Send POST request to the pemesanans endpoint for each passenger
-          const response = await api.post("/pemesanans", payload);
-          // Handle the response if needed
+          const response = await api.post("/pemesanans", passengerPayload);
           console.log(`Response for passenger ${i + 1}:`, response.data);
         } catch (error) {
           console.error(`Error forwarding data for passenger ${i + 1}:`, error);
@@ -350,7 +363,17 @@ export default {
       console.log(jadwalValue.value.hargaTiket);
 
       // Optionally, navigate to another page or show a success message after all requests
-      router.push("/paymentmethod");
+      router.push({
+        path: "/paymentmethod",
+        query: {
+          departure: departureId,
+          destination: destinationId,
+          pembayaran: pembayaranId.data,
+          passengerCount: passengerCount,
+          date: date.value.toISOString(), // Convert date to ISO string if needed
+          jadwalId: jadwalId, // Add the clicked jadwal's ID
+        },
+      });
     };
 
     // Fetch data when the component is mounted
