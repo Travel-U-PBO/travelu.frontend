@@ -91,6 +91,12 @@
             style="color: white; font-weight: 400; font-size: 1.5rem"
             >Terima kasih sudah melakukan pembayaran
           </span>
+          <span
+            class="q-pl-lg"
+            v-if="pembayaran.status == 'BATAL'"
+            style="color: white; font-weight: 400; font-size: 1.5rem"
+            >Pembayaran anda melebihi batas waktu
+          </span>
         </div>
       </div>
 
