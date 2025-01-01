@@ -494,6 +494,17 @@ export default {
             updateBody
           );
           console.log("Payment record updated:", orderUpdate.data);
+          router.push({
+            path: "/payment/status",
+            query: {
+              departure: departureId,
+              destination: destinationId,
+              pembayaran: pembayaranId.data,
+              passengerCount: passengerCount,
+              date: date.value.toISOString(), // Convert date to ISO string if needed
+              jadwalId: jadwalId, // Add the clicked jadwal's ID
+            },
+          });
 
           // Handle successful response (e.g., navigate to a confirmation page)
         } catch (error) {

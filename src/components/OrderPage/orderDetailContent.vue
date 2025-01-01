@@ -364,7 +364,7 @@ export default {
 
       // Optionally, navigate to another page or show a success message after all requests
       router.push({
-        path: "/paymentmethod",
+        path: "/payment",
         query: {
           departure: departureId,
           destination: destinationId,

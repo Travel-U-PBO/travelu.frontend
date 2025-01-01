@@ -1,30 +1,13 @@
 <template>
   <div class="q-pa-lg flex flex-center">
     <div class="col q-pt-lg" style="width: 90%">
-      <!-- Informasi Utama -->
-      <div class="row" style="font-size: 2rem">
-        <div class="col-7 text-align text-black">
-          <span style="text-transform: uppercase">
-            {{ departureKota.name }}, {{ departureLabel.name }} -
-            {{ destinationKota.name }}, {{ destinationLabel.name }} <br />
-          </span>
-          <span style="font-size: 1.5rem">
-            {{ formatDate(date) }} | {{ passengerCount }} Penumpang
-          </span>
-        </div>
-      </div>
-
-      <hr class="row" style="border: 1px solid black; margin: 10px 0" />
-
       <!-- Informasi Pemesan -->
 
-      <div class="row" style="font-size: 2rem">
-        <b>Informasi Utama</b>
-      </div>
       <div style="outline: 0px solid #0077b6; border-radius: 5px">
         <div
           class="row q-my-sm q-py-sm"
           style="background-color: #1976d2; border-radius: 5px"
+          :class="statusClass"
         >
           <span
             class="q-pl-lg"
@@ -35,27 +18,6 @@
 
         <div class="row q-my-sm">
           <div class="col-8" style="margin-left: 25px; margin-top: 10px">
-            <div class="span">Departure</div>
-            <div class="value">
-              {{ departureKota.name }}, {{ departureLabel.name }}
-            </div>
-            <div class="span">Departure Date & Time</div>
-            <div class="value">
-              {{ formatDate(date) }}, At {{ jadwal.waktu }} WIB
-            </div>
-          </div>
-
-          <div class="col" style="margin-left: 25px; margin-top: 10px">
-            <div class="span">Destination</div>
-            <div class="value">
-              {{ destinationKota.name }}, {{ destinationLabel.name }}
-            </div>
-            <div class="span">Total Passenger</div>
-            <div class="value">{{ passengerCount }} Penumpang</div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-8" style="margin-left: 25px; margin-top: 10px">
             <div class="span">Ticket Code</div>
             <div class="value">
               #{{
@@ -64,269 +26,104 @@
                   : "N/A"
               }}
             </div>
-            <div class="span">Order's Name</div>
-            <div class="value">
-              {{ pembayaran.name }}
-            </div>
+            <div class="span">Total Payment</div>
+            <div class="value">Rp.{{ pembayaran.harga }}</div>
           </div>
 
-          <div class="col" style="margin-left: 25px; margin-top: 10px">
-            <div class="span">Phone Number</div>
+          <div class="col q-mb-xl" style="margin-left: 25px; margin-top: 10px">
+            <div class="span">Invoice Number</div>
             <div class="value">
-              {{ pembayaran.noTelp }}
+              {{ pembayaran.invoice }}
             </div>
-            <div class="span">Email</div>
-            <div class="value">{{ pembayaran.email }}</div>
-          </div>
-          <div class="col-8 q-mb-sm" style="margin-left: 25px">
-            <div class="span">Address</div>
-            <div class="value">
-              {{ pembayaran.address }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Informasi Penumpang -->
-
-      <div
-        style="outline: 0px solid #0077b6; border-radius: 5px"
-        v-for="passenger in passengerList"
-        :key="passenger.id"
-      >
-        <div
-          class="row q-my-sm q-py-sm"
-          style="background-color: #1976d2; border-radius: 5px"
-        >
-          <span
-            class="q-pl-lg"
-            style="color: white; font-weight: 400; font-size: 1.5rem"
-            >Informasi Pelanggan Nomor 1</span
-          >
-        </div>
-        <div class="row">
-          <div class="col-8" style="margin-left: 25px; margin-top: 10px">
-            <div class="span">Passenger's Name</div>
-            <div class="value">
-              {{ passenger.panggilan }} {{ passenger.namaCustomer }}
-            </div>
-            <div class="span">Address</div>
-            <div class="value">
-              {{ passenger.alamat }}
-            </div>
-          </div>
-
-          <div class="col q-mb-sm" style="margin-left: 25px; margin-top: 10px">
-            <div class="span">Phone Number</div>
-            <div class="value">
-              {{ passenger.noTelp }}
-            </div>
-            <div class="span">Seat Number</div>
-            <div class="value">{{ passenger.id }}</div>
           </div>
         </div>
       </div>
 
       <!-- Pilihan Pembayaran -->
-      <div class="row q-mt-xl" style="font-size: 2rem">
-        <b>Pilih Metode Pembayaran</b>
-      </div>
-      <div style="outline: 0px solid #0077b6; border-radius: 5px">
-        <q-card class="q-my-md">
-          <q-expansion-item
-            expand-icon="expand_more"
-            :header-class="{ 'text-weight-bold': true }"
-          >
-            <template v-slot:header>
-              <div class="text-h5">Virtual Account</div>
-            </template>
-            <q-card-section class="row items-center q-pa-md">
-              <q-btn-toggle
-                v-model="method"
-                spread
-                toggle-color="grey"
-                :options="[
-                  { value: 'BCA', slot: 'BCA' },
-                  { value: 'MANDIRI', slot: 'MANDIRI' },
-                  { value: 'BNI', slot: 'BNI' },
-                  { value: 'BRI', slot: 'BRI' },
-                  { value: 'BSI', slot: 'BSI' },
-                ]"
-              >
-                <template v-slot:BCA>
-                  <div class="q-ma-xl">
-                    <img
-                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_Central_Asia.svg/1280px-Bank_Central_Asia.svg.png"
-                      alt="Placeholder Image"
-                      width="100%"
-                      height="100%"
-                    />
-                  </div>
-                </template>
-                <template v-slot:MANDIRI>
-                  <div class="q-ma-xl">
-                    <img
-                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/2560px-Bank_Mandiri_logo_2016.svg.png"
-                      alt="Placeholder Image"
-                      width="100%"
-                      height="100%"
-                    />
-                  </div>
-                </template>
-                <template v-slot:BNI>
-                  <div class="q-ma-xl">
-                    <img
-                      src="https://upload.wikimedia.org/wikipedia/id/thumb/5/55/BNI_logo.svg/2560px-BNI_logo .svg.png"
-                      alt="Placeholder Image"
-                      width="100%"
-                      height="100%"
-                    />
-                  </div>
-                </template>
-                <template v-slot:BRI>
-                  <div class="q-ma-xl">
-                    <img
-                      src="https://upload.wikimedia.org/wikipedia/commons/2/2e/BRI_2020.svg"
-                      alt="Placeholder Image"
-                      width="100%"
-                      height="100%"
-                    />
-                  </div>
-                </template>
-                <template v-slot:BSI>
-                  <div class="q-ma-xl">
-                    <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRl0jV5mJRr6kq1jqh-oGQRB6UuKulC6ObjXg&s"
-                      alt="Placeholder Image"
-                      width="100%"
-                      height="100%"
-                    />
-                  </div>
-                </template>
-              </q-btn-toggle>
-            </q-card-section>
-          </q-expansion-item>
-        </q-card>
-        <q-card class="q-my-md">
-          <q-expansion-item
-            expand-icon="expand_more"
-            :header-class="{ 'text-weight-bold': true }"
-          >
-            <template v-slot:header>
-              <div class="text-h5">E-Money</div>
-            </template>
-            <q-btn-toggle
-              v-model="method"
-              style="width: 40%"
-              spread
-              toggle-color="primary"
-              :options="[
-                { value: 'OVO', slot: 'OVO' },
-                { value: 'SHOPEEPAY', slot: 'SHOPEEPAY' },
-              ]"
-            >
-              <template v-slot:OVO>
-                <div class="q-ma-xl">
-                  <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSgIPTZHiPIpvARDKLxabgOHd0UZt0x2ZPzg&s"
-                    alt="Placeholder Image"
-                    width="100%"
-                    height="100%"
-                  />
-                </div>
-              </template>
-              <template v-slot:SHOPEEPAY>
-                <div class="q-ma-xl">
-                  <img
-                    src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjC8J0HHOLKSppss14Im84sOJ5D-qB0LAKsxZ8esss0VNs2LJhNYR4S9KCDV7q-U332uEe9BlF1E7rzW6tqvrZfGiivxobhls2I2E9dWgok7LzdJuNOp_s-h4RmUvc4ENhs-RZ9hVEgrPkK9DUlTvhzOFY-WW0CYEAI_xgSFRjmLLYf77QOxNC5yg/w320-h141/ShopeePay%20Logo%20-%20%20(Koleksilogo.com).png"
-                    alt="Placeholder Image"
-                    width="100%"
-                    height="100%"
-                  />
-                </div>
-              </template>
-            </q-btn-toggle>
-          </q-expansion-item>
-        </q-card>
-      </div>
 
       <div style="outline: 0px solid #0077b6; border-radius: 5px">
-        <div class="row q-my-sm">
-          <div class="col-8" style="margin-left: 25px; margin-top: 10px">
-            <div class="span">Harga Tiket</div>
-            <div class="value">Rp.{{ jadwal.hargaTiket }}</div>
-          </div>
-
-          <div class="col" style="margin-left: 25px; margin-top: 10px">
-            <div class="span">Total Harga</div>
-            <div class="value">Rp.{{ jadwal.hargaTiket * passengerCount }}</div>
-          </div>
-        </div>
-      </div>
-
-      <div
-        class="row q-my-sm"
-        style="font-size: 2rem; background-color: #f0f0f9"
-      >
         <div
-          class="terms-container"
-          style="margin-left: 30px; margin-top: 15px; margin-bottom: 15px"
+          class="row q-mt-xl"
+          style="font-size: 2rem; margin-left: 25px; margin-top: 10px"
+        ></div>
+        <div style="outline: 0px solid #0077b6; border-radius: 5px">
+          <div class="row q-my-sm">
+            <div class="col-8" style="margin-left: 25px; margin-top: 10px">
+              <div
+                class="span"
+                v-if="
+                  ['BCA', 'BRI', 'MANDIRI', 'BSI', 'BNI'].includes(
+                    pembayaran.metode
+                  )
+                "
+              >
+                Virtual Account
+              </div>
+              <div class="span" v-else>E-Money</div>
+              <div class="value">{{ pembayaran.metode }}</div>
+            </div>
+
+            <div
+              class="col q-mb-xl"
+              style="margin-left: 25px; margin-top: 10px"
+            >
+              <div class="span">Virtual Account Number</div>
+              <div class="value">
+                {{ pembayaran.vAnumber }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="row q-my-sm q-py-sm"
+          style="background-color: #1976d2; border-radius: 5px"
+          :class="statusClass"
         >
-          <div class="col" style="display: flex">
-            <q-btn rounded color="primary" @click="showTerms">
-              <span style="font-size: 1rem">
-                Read Online Reservation Terms & Conditions
-              </span>
-            </q-btn>
-          </div>
-          <div class="checkbox-container">
-            <input
-              type="checkbox"
-              id="terms-checkbox"
-              v-model="termsAccepted"
-            />
-            <label for="terms-checkbox" class="span" style="margin-left: 5px">
-              Please check the box as proof that you comply with the terms &
-              conditions imposed by the travel management.
-            </label>
-          </div>
+          <span
+            class="q-pl-lg"
+            v-if="pembayaran.status == 'BELUM_BAYAR'"
+            style="color: white; font-weight: 400; font-size: 1.5rem"
+            >Mohon selesaikan pembayaran sebelum {{ expired }}
+          </span>
+          <span
+            class="q-pl-lg"
+            v-if="pembayaran.status == 'LUNAS'"
+            style="color: white; font-weight: 400; font-size: 1.5rem"
+            >Terima kasih sudah melakukan pembayaran
+          </span>
         </div>
       </div>
 
-      <div class="row" style="height: 5vh; display: flex; align-items: center">
-        <div class="col" style="display: flex; justify-content: flex-end">
-          <q-btn
-            rounded
-            color="primary"
-            :disabled="method == null || !termsAccepted"
-            @click="continuePayment"
-          >
-            Continue Payment
-          </q-btn>
-        </div>
+      <div style="outline: 0px solid #0077b6; border-radius: 5px">
+        <q-btn
+          class="q-my-sm q-py-sm"
+          v-if="pembayaran.status == 'BELUM_BAYAR'"
+          @click="continuePayment"
+          style="border-radius: 5px; width: 100%"
+          color="primary"
+        >
+          <span style="color: white; font-weight: 400; font-size: 1rem">
+            Cek Status Pembayaran
+          </span>
+        </q-btn>
+        <q-btn
+          class="q-my-sm q-py-sm"
+          v-if="pembayaran.status == 'LUNAS'"
+          @click="downloadPDF"
+          style="border-radius: 5px; width: 100%"
+          color="primary"
+        >
+          <span style="color: white; font-weight: 400; font-size: 1rem">
+            Download Tiket
+          </span>
+        </q-btn>
       </div>
-
-      <!-- Modal for Terms and Conditions -->
-      <q-dialog v-model="termsDialog" persistent>
-        <q-card>
-          <q-card-section>
-            <div class="text-h6">Terms and Conditions</div>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-          </q-card-section>
-          <q-card-actions>
-            <q-btn label="Close" @click="termsDialog = false" />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { v4 as uuidv4 } from "uuid";
 import CryptoJS from "crypto-js";
 
@@ -360,28 +157,23 @@ export default {
     const method = ref("");
     const passengerList = ref([]);
 
+    const timeLeft = ref(0); // Time left in seconds
+    const timer = ref(null); // Timer reference
+    const formattedExpiredDate = ref("");
     const hover = ref(false);
     const termsDialog = ref(false);
     const termsAccepted = ref(false);
     const isOpen = ref(false);
     const jadwal = ref("");
     const pembayaran = ref("");
-    const loadedJadwal = ref(false);
-
+    const expired = ref(""); // This will hold the expired date
     let paymentResponse = ref(null);
 
     const showTerms = () => {
       termsDialog.value = true; // Show the modal
     };
 
-    function generateSignature(body, clientId, requestId, requestTimestamp) {
-      const jsonBody = JSON.stringify(body);
-      var digestSHA256 = CryptoJS.SHA256(CryptoJS.enc.Utf8.parse(jsonBody));
-      var digestBase64 = CryptoJS.enc.Base64.stringify(digestSHA256);
-      console.log("Digest Component: " + jsonBody);
-      console.log("Digest sha256: " + digestSHA256);
-      console.log("Digest: " + digestBase64);
-
+    function generateSignature(clientId, requestId, requestTimestamp) {
       var signatureComponents =
         "Client-Id:" +
         clientId +
@@ -392,10 +184,8 @@ export default {
         "Request-Timestamp:" +
         requestTimestamp +
         "\n" +
-        "Request-Target:/bca-virtual-account/v2/payment-code" +
-        "\n" +
-        "Digest:" +
-        digestBase64;
+        "Request-Target:/orders/v1/status/" +
+        pembayaran.value.invoice;
 
       var signatureHmacSha256 = CryptoJS.HmacSHA256(
         signatureComponents,
@@ -412,7 +202,7 @@ export default {
 
     const continuePayment = async () => {
       // Check if a payment method is selected and terms are accepted
-      if (method.value && termsAccepted.value) {
+      if (true) {
         console.log("Proceeding to payment...");
         console.log(jadwal.value);
         console.log(Number(jadwal.value.hargaTiket) * passengerCount);
@@ -441,7 +231,6 @@ export default {
           "Request-Id": uuid, // Generate a unique request ID
           "Request-Timestamp": new Date().toISOString().slice(0, 19) + "Z", // Current timestamp
           Signature: generateSignature(
-            body,
             "BRN-0217-1724227511460",
             uuid, // Use the same request ID for the signature
             new Date().toISOString().slice(0, 19) + "Z"
@@ -450,40 +239,33 @@ export default {
 
         try {
           // Make the API call based on the selected payment method
-          paymentResponse.value = await api.post(
-            "https://api-sandbox.doku.com/bca-virtual-account/v2/payment-code",
-            body,
+          paymentResponse.value = await api.get(
+            `https://api-sandbox.doku.com/orders/v1/status/${pembayaran.value.invoice}`,
             { headers }
           );
           console.log(
             "Invoice:",
-            paymentResponse.value.data.order.invoice_number
-          );
-          console.log(
-            "VA Number:",
-            paymentResponse.value.data.virtual_account_info
-              .virtual_account_number
-          );
-          console.log(
-            "Expired Date:",
-            paymentResponse.value.data.virtual_account_info.expired_date_utc
+            paymentResponse.value.data.transaction.status
           );
 
           const existingPaymentResponse = await api.get(
             `/pembayarans/${pembayaranId}`
           );
           const existingPaymentData = existingPaymentResponse.data;
+          let status = "";
+          if (paymentResponse.value.data.transaction.status == "SUCCESS") {
+            status = "LUNAS"; // Payment completed successfully
+          } else if (
+            paymentResponse.value.data.transaction.status == "PENDING"
+          ) {
+            status = "BELUM_BAYAR"; // Payment is pending
+          } else {
+            status = "BATAL"; // Payment failed or was canceled
+          }
 
           const updateBody = {
             ...existingPaymentData,
-            metode: method.value, // Set the payment method
-            status: "BELUM_BAYAR", // Set the payment method
-            invoice: paymentResponse.value.data.order.invoice_number,
-            expiredDate:
-              paymentResponse.value.data.virtual_account_info.expired_date_utc,
-            vAnumber:
-              paymentResponse.value.data.virtual_account_info
-                .virtual_account_number,
+            status: status, // Set the payment method
           };
 
           console.log(updateBody);
@@ -494,6 +276,8 @@ export default {
             updateBody
           );
           console.log("Payment record updated:", orderUpdate.data);
+
+          // Extract the expiration date from the response
 
           // Handle successful response (e.g., navigate to a confirmation page)
         } catch (error) {
@@ -520,6 +304,17 @@ export default {
           `/pembayarans/${pembayaranId}`
         );
         pembayaran.value = pembayaranResponse.data;
+        expired.value = new Date(pembayaran.value.expiredDate + "Z");
+
+        const options = {
+          timeZone: "Asia/Jakarta", // WIB timezone
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false, // 24-hour format
+        };
+        expired.value =
+          expired.value.toLocaleTimeString("en-US", options) + " WIB";
 
         // Assign the filtered list to jadwalList
         jadwal.value = jadwalResponse.data;
@@ -581,6 +376,12 @@ export default {
       fetchData();
     });
 
+    watch(timeLeft, (newValue) => {
+      if (newValue <= 0) {
+        clearInterval(timer.value);
+      }
+    });
+
     return {
       departureLabel,
       destinationLabel,
@@ -597,11 +398,28 @@ export default {
       isOpen,
       termsDialog,
       termsAccepted,
+      expired,
       showTerms,
       continuePayment,
       convertTimeToMinutes,
       formatToTwoDigits,
+      formattedExpiredDate,
+      timeLeft,
     };
+  },
+  computed: {
+    statusClass() {
+      switch (this.pembayaran.status) {
+        case "BELUM_BAYAR":
+          return "bg-warning"; // Quasar warning class
+        case "LUNAS":
+          return "bg-positive"; // Quasar success class
+        case "BATAL":
+          return "bg-negative"; // Quasar danger class
+        default:
+          return ""; // Default class if needed
+      }
+    },
   },
 };
 </script>

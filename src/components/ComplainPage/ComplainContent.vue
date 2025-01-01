@@ -136,7 +136,7 @@ export default {
         rating: this.rating,
         content: this.feedback, // Content from the textarea
         pelangganId: 1,
-        status: 0, // Default status
+        status: "PENDING", // Default status
         title: this.judulMasukan || "complain", // Use the title from the input or default to "complain"
       };
 

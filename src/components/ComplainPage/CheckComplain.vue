@@ -34,9 +34,18 @@
               <h6>Konten: {{ content }}</h6>
             </div>
             <div class="text-left col-mb-sm">
-              <h6>
+              <h6 v-if="statusMessage == 'UNRESOLVED'" style="color: red">
                 Status: <span>{{ statusMessage }}</span>
               </h6>
+              <h6 v-if="statusMessage == 'RESOLVED'" style="color: green">
+                Status: <span>{{ statusMessage }}</span>
+              </h6>
+              <h6 v-if="statusMessage == 'PENDING'" style="color: yellow">
+                Status: <span>{{ statusMessage }}</span>
+              </h6>
+            </div>
+            <div class="text-left col-mb-sm">
+              <h6 v-if="respon">Respons: {{ respon }}</h6>
             </div>
             <div class="text-left col-mb-sm" v-if="pemesananId !== null">
               <h6>Pesanan: {{ pemesananId }}</h6>
@@ -61,18 +70,12 @@ export default {
     const user = ref("");
     const statusMessage = ref("");
 
-    const statusMap = {
-      0: "Menunggu",
-      1: "Diterima",
-      2: "Ditolak",
-    };
-
     const fetchTicket = async () => {
       try {
         const response = await api.get(`/cstickets/${id}`);
         ticket.value = response.data;
         user.value = await fetchUser(ticket.value.pelangganId);
-        statusMessage.value = statusMap[ticket.value.status];
+        statusMessage.value = response.data.status;
       } catch (error) {
         console.error("Error fetching ticket:", error);
       }
@@ -96,6 +99,7 @@ export default {
       title: computed(() => ticket.value?.title || ""),
       content: computed(() => ticket.value?.content || ""),
       rating: computed(() => ticket.value?.rating || 0),
+      respon: computed(() => ticket.value?.response || 0),
       pemesananId: computed(() => ticket.value?.pemesananId),
       user,
       statusMessage,
