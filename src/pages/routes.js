@@ -40,7 +40,7 @@ const routes = [
       },
       {
         path: "paymentfailed",
-        component: () => import("src/pages/PaymentStatusPage.vue"),
+        component: () => import("pages/PaymentStatusFailedPage.vue"),
       },
       {
         path: "order",
@@ -73,17 +73,8 @@ const routes = [
         component: () => import("pages/ItinerariPage.vue"),
       },
       {
-        path: "payment",
-        children: [
-          {
-            path: "",
-            component: () => import("pages/PaymentMethodPage.vue"),
-          },
-          {
-            path: "status",
-            component: () => import("pages/PaymentStatusPage.vue"),
-          },
-        ],
+        path: "paymentmethod",
+        component: () => import("pages/PaymentMethodPage.vue"),
       },
       {
         path: "waitingforpayment",
@@ -95,7 +86,7 @@ const routes = [
       },
       {
         path: "paymentfailed",
-        component: () => import("src/pages/PaymentStatusPage.vue"),
+        component: () => import("pages/PaymentStatusFailedPage.vue"),
       },
       {
         path: "order",
@@ -108,10 +99,6 @@ const routes = [
       {
         path: "orderdetail",
         component: () => import("pages/orderDetailPage.vue"),
-      },
-      {
-        path: "about-us",
-        component: () => import("pages/AboutUsPage.vue"),
       },
     ],
   },

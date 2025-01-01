@@ -6,6 +6,7 @@
           <h3><b>Temukan Berbagai Destinasi Wisata 🏨</b></h3>
         </div>
       </div>
+
       <div class="col-12 row justify-center">
         <div
           class="col-md-3 col-sm-6 q-pa-sm"
