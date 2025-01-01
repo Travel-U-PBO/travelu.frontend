@@ -117,7 +117,7 @@ const routes = [
     children: [
       {
         path: "",
-        component: () => import("src/pages/LoginPage.vue"),
+        component: () => import("src/auth/pages/IdentityPasswordLoginPage.vue"),
       },
     ],
   },
@@ -127,7 +127,8 @@ const routes = [
     children: [
       {
         path: "",
-        component: () => import("src/pages/RegisterPage.vue"),
+        component: () =>
+          import("src/auth/pages/IdentityPasswordRegisterPage.vue"),
       },
     ],
   },
