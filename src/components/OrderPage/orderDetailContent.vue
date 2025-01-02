@@ -434,6 +434,8 @@ export default {
       hover,
       isOpen,
       fullName,
+      isValidEmail,
+      isValidPhoneNumber,
       telephone,
       email,
       address,
