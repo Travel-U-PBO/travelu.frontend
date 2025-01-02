@@ -30,10 +30,26 @@ const slide = ref(1);
 
 // Define an array of slides for better maintainability
 const slides = [
-  { name: 1, imgSrc: "public/jakarta.jpg" },
-  { name: 2, imgSrc: "Gedung_Sate_Bandung_Jawa_Barat.jpg" },
-  { name: 3, imgSrc: "surabaya.jpg" },
-  { name: 4, imgSrc: "bandung3.jpg" },
+  {
+    name: 1,
+    imgSrc:
+      "https://reservasi.mylintas.co.id/assets/uploads/promo//d3870d063be2c7af107e708ca6e9a3a0.jpg",
+  },
+  {
+    name: 2,
+    imgSrc:
+      "https://www.joglosemarbus.com/uploads/slider/slider20230410163827.web-banner-joglosemar-conv-1-2.png",
+  },
+  {
+    name: 3,
+    imgSrc:
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/b6e874107714719.5fad336f21e5b.png",
+  },
+  {
+    name: 4,
+    imgSrc:
+      "https://st4.depositphotos.com/1049680/20730/i/1600/depositphotos_207302164-stock-photo-young-african-american-man-holding.jpg",
+  },
 ];
 </script>
 
