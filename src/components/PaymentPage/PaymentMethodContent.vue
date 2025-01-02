@@ -499,7 +499,7 @@ export default {
             query: {
               departure: departureId,
               destination: destinationId,
-              pembayaran: pembayaranId.data,
+              pembayaran: pembayaranId,
               passengerCount: passengerCount,
               date: date.value.toISOString(), // Convert date to ISO string if needed
               jadwalId: jadwalId, // Add the clicked jadwal's ID
@@ -527,9 +527,11 @@ export default {
         departureKota.value = departureKotaResponse.data; // Assuming the response has a 'kota' field
 
         const jadwalResponse = await api.get(`/jadwals/${jadwalId}`);
+
         const pembayaranResponse = await api.get(
           `/pembayarans/${pembayaranId}`
         );
+        console.log(pembayaranId);
         pembayaran.value = pembayaranResponse.data;
 
         // Assign the filtered list to jadwalList
