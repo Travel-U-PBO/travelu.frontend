@@ -102,11 +102,15 @@ const routes = [
         component: () => import("pages/OrderTicketPage.vue"),
       },
       {
+        path: "order/itinerari",
+        component: () => import("pages/OrderItinerariPage.vue"),
+      },
+      {
         path: "userdetail",
         component: () => import("pages/UserDetailPage.vue"),
       },
       {
-        path: "orderdetail",
+        path: "order/detail",
         component: () => import("pages/orderDetailPage.vue"),
       },
       {

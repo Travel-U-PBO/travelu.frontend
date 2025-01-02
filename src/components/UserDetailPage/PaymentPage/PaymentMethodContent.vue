@@ -254,6 +254,7 @@ export default {
     // Access query parameters
     const departureId = route.query.departure;
     const destinationId = route.query.destination;
+    const pembayaranId = route.query.pembayaran;
     const passengerCount = route.query.passengerCount;
     const date = ref(new Date(route.query.date));
 
@@ -307,6 +308,7 @@ export default {
         path: "/orderdetail",
         query: {
           departure: departureId,
+          pembayaran: pembayaranId,
           destination: destinationId,
           passengerCount: passengerCount,
           date: date.value.toISOString(), // Convert date to ISO string if needed

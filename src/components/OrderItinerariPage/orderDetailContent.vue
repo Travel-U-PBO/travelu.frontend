@@ -119,7 +119,7 @@
           <span
             class="q-pl-lg"
             style="color: white; font-weight: 400; font-size: 1.5rem"
-            >Data Pelanggan Nomor {{ index }}</span
+            >Data Pelanggan</span
           >
         </div>
         <form class="q-px-xl q-pb-sm row" style="font-size: 1rem">
@@ -130,7 +130,6 @@
                 type="text"
                 :id="'fullName' + index"
                 :name="'fullName' + index"
-                :disabled="useFirstData && index == 1"
                 v-model="passengerFullNames[index - 1]"
                 style="
                   width: 100%;
@@ -146,7 +145,6 @@
                 type="text"
                 :id="'telephone' + index"
                 :name="'telephone' + index"
-                :disabled="useFirstData && index == 1"
                 v-model="passengerTelephones[index - 1]"
                 style="
                   width: 100%;
@@ -182,7 +180,6 @@
                 type="text"
                 :id="'address' + index"
                 :name="'address' + index"
-                :disabled="useFirstData && index == 1"
                 v-model="passengerAddresses[index - 1]"
                 style="
                   width: 100%;
@@ -207,7 +204,7 @@
 </template>
 
 <script>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { api } from "boot/axios";
 
@@ -220,7 +217,6 @@ export default {
     const telephone = ref("");
     const email = ref("");
     const address = ref("");
-    const useFirstData = ref(false);
     const passengerFullNames = ref(
       Array(Number(route.query.passengerCount)).fill("")
     );
@@ -389,13 +385,6 @@ export default {
       fetchData();
       fetchJadwalData();
     });
-    watch(useFirstData, (newValue) => {
-      if (newValue) {
-        passengerFullNames.value[0] = fullName.value;
-        passengerTelephones.value[0] = telephone.value;
-        passengerAddresses.value[0] = address.value;
-      }
-    });
 
     return {
       departureLabel,
@@ -411,7 +400,6 @@ export default {
       telephone,
       email,
       address,
-      useFirstData,
       passengerFullNames,
       passengerTelephones,
       passengerTitles,

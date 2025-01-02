@@ -64,7 +64,7 @@
       <div class="col-1">Tentang Kami</div>
     </div>
     <div class="col-2 column q-pr-xl">
-      <div class="col-1 q-pb-xl">Download Aplikasi Travel-U</div>
+      <div class="col-1 q-pb-xl desktop-only">Download Aplikasi Travel-U</div>
       <a
         :href="'https://instagram.com/travelu'"
         target="_blank"
@@ -89,7 +89,7 @@
       </a>
     </div>
     <div class="col-3 column q-pr-sm">
-      <div class="col-1 q-mb-md">Alamat Kami</div>
+      <div class="col-1 q-mb-md desktop-only">Alamat Kami</div>
       <div class="col-1 q-mb-lg" style="font-size: 1rem">
         Jl. Telekomunikasi No.1, Sukapura, Kec. Dayeuhkolot, Kabupaten Bandung,
         Jawa Barat 40267

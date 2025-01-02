@@ -14,7 +14,7 @@
         >Travel-U</span
       >
 
-      <div>
+      <div class="desktop-only">
         <a href="" :style="{ color: isScrolled ? 'black' : 'white' }">
           <q-btn flat size="1.3rem" style="font-weight: 400" label="Beranda" />
         </a>
