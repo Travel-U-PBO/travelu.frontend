@@ -206,6 +206,9 @@ export default {
       return "HMACSHA256=" + signatureBase64;
     }
 
+    const downloadPDF = () => {
+      window.print(); // This will open the print dialog
+    };
     const continuePayment = async () => {
       // Check if a payment method is selected and terms are accepted
       if (true) {
@@ -397,6 +400,7 @@ export default {
       passengerCount,
       passengerList,
       date,
+      downloadPDF,
       jadwal,
       formatDate,
       pembayaran,

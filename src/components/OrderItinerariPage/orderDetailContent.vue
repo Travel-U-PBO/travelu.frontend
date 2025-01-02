@@ -62,7 +62,6 @@
               id="ordererTelephone"
               name="ordererTelephone"
               v-model="telephone"
-              :class="{ 'is-invalid': !isValidPhoneNumber(telephone) }"
               style="
                 width: 100%;
                 padding: 10px;
@@ -70,9 +69,6 @@
                 border-radius: 5px;
               "
             />
-            <div v-if="!isValidPhoneNumber(telephone)" style="color: red">
-              Phone number must be max 12 digits.
-            </div>
           </div>
           <div class="q-py-sm">
             <span>Email:</span>
@@ -81,7 +77,6 @@
               id="ordererEmail"
               name="ordererEmail"
               v-model="email"
-              :class="{ 'is-invalid': !isValidEmail(email) }"
               style="
                 width: 100%;
                 padding: 10px;
@@ -89,9 +84,6 @@
                 border-radius: 5px;
               "
             />
-            <div v-if="!isValidEmail(email)" style="color: red">
-              Invalid email format.
-            </div>
           </div>
           <div class="q-py-sm">
             <span>Alamat Lengkap:</span>
@@ -127,7 +119,7 @@
           <span
             class="q-pl-lg"
             style="color: white; font-weight: 400; font-size: 1.5rem"
-            >Data Pelanggan Nomor {{ index }}</span
+            >Data Pelanggan</span
           >
         </div>
         <form class="q-px-xl q-pb-sm row" style="font-size: 1rem">
@@ -138,7 +130,6 @@
                 type="text"
                 :id="'fullName' + index"
                 :name="'fullName' + index"
-                :disabled="useFirstData && index == 1"
                 v-model="passengerFullNames[index - 1]"
                 style="
                   width: 100%;
@@ -154,7 +145,6 @@
                 type="text"
                 :id="'telephone' + index"
                 :name="'telephone' + index"
-                :disabled="useFirstData && index == 1"
                 v-model="passengerTelephones[index - 1]"
                 style="
                   width: 100%;
@@ -190,7 +180,6 @@
                 type="text"
                 :id="'address' + index"
                 :name="'address' + index"
-                :disabled="useFirstData && index == 1"
                 v-model="passengerAddresses[index - 1]"
                 style="
                   width: 100%;
@@ -215,7 +204,7 @@
 </template>
 
 <script>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { api } from "boot/axios";
 
@@ -228,7 +217,6 @@ export default {
     const telephone = ref("");
     const email = ref("");
     const address = ref("");
-    const useFirstData = ref(false);
     const passengerFullNames = ref(
       Array(Number(route.query.passengerCount)).fill("")
     );
@@ -287,15 +275,6 @@ export default {
       }
     };
 
-    const isValidEmail = (email) => {
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailPattern.test(email);
-    };
-
-    const isValidPhoneNumber = (number) => {
-      const phonePattern = /^\d{1,12}$/; // Allows only digits and max 12 digits
-      return phonePattern.test(number);
-    };
     const formatDate = (date) => {
       const days = [
         "Minggu",
@@ -341,15 +320,6 @@ export default {
     };
 
     const forwardData = async () => {
-      if (!isValidEmail(email.value)) {
-        alert("Mohon menggunakan Email yang benar.");
-        return;
-      }
-
-      if (!isValidPhoneNumber(telephone.value)) {
-        alert("Mohon menggunakan Nomor Telepon yang benar(max 12 digits).");
-        return;
-      }
       const noInvoice = generateInvoiceNumber();
       const payload = {
         id: 0, // Assuming this will auto-increment on the server
@@ -415,13 +385,6 @@ export default {
       fetchData();
       fetchJadwalData();
     });
-    watch(useFirstData, (newValue) => {
-      if (newValue) {
-        passengerFullNames.value[0] = fullName.value;
-        passengerTelephones.value[0] = telephone.value;
-        passengerAddresses.value[0] = address.value;
-      }
-    });
 
     return {
       departureLabel,
@@ -434,12 +397,9 @@ export default {
       hover,
       isOpen,
       fullName,
-      isValidEmail,
-      isValidPhoneNumber,
       telephone,
       email,
       address,
-      useFirstData,
       passengerFullNames,
       passengerTelephones,
       passengerTitles,

@@ -5,8 +5,7 @@
       <div class="row" style="font-size: 2rem">
         <div class="col-7 text-align text-black">
           <span style="text-transform: uppercase">
-            {{ departureKota.name }}, {{ departureLabel.name }} -
-            {{ destinationKota.name }}, {{ destinationLabel.name }} <br />
+            Destinasi Wisata: {{}}
           </span>
           <span style="font-size: 1.5rem">
             {{ formatDate(date) }} | {{ passengerCount }} Penumpang

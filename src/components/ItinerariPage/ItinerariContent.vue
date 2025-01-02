@@ -79,12 +79,14 @@
               </div>
             </div>
             <!-- Tombol Pesan -->
+
             <div
               class="btn btn-primary"
               style="margin-top: 20px; margin-bottom: 40px"
             >
               <q-btn
                 style="background-color: #0077b6; width: 100%; color: white"
+                @click="forwardData"
                 >Pesan sekarang</q-btn
               >
             </div>
@@ -134,6 +136,15 @@ async function loadDestinasi() {
     console.warn("No destinasi IDs found in itinerari."); // Handle case where no IDs are present
   }
 }
+
+const forwardData = async () => {
+  router.push({
+    path: "/order/itinerari",
+    query: {
+      destinasi: departureId,
+    },
+  });
+};
 
 // Call loadDestinasi when the component is mounted
 onMounted(() => {

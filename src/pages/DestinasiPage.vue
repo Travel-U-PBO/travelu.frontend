@@ -3,6 +3,8 @@
     <div class="page">
       <DestinasiContent
         :destinasi="destinasi"
+        :KotaList="KotaList"
+        :CabangList="CabangList"
         v-if="loadedDestinasi"
         class="content q-pt-xl"
       />
@@ -24,6 +26,34 @@ export default {
   setup() {
     const loadedDestinasi = ref(false);
     const destinasi = ref(null);
+    const loadedKota = ref(false);
+    const loadedCabang = ref(false);
+    const loadedItinerari = ref(false);
+    const KotaList = ref([]);
+    const CabangList = ref([]);
+
+    function loadKota() {
+      api
+        .get("/kotas")
+        .then((response) => {
+          KotaList.value = response.data;
+          loadedKota.value = true; // Corrected variable name
+        })
+        .catch((error) => {
+          console.error("Error fetching Kota list:", error); // Error handling
+        });
+    }
+    function loadCabang() {
+      api
+        .get("/cabangs")
+        .then((response) => {
+          CabangList.value = response.data;
+          loadedCabang.value = true; // Corrected variable name
+        })
+        .catch((error) => {
+          console.error("Error fetching Cabang list:", error); // Error handling
+        });
+    }
 
     function loadDestinasi() {
       const route = useRoute(); // Get the current route
@@ -43,10 +73,17 @@ export default {
     onMounted(() => {
       // loadItinerari();
       loadDestinasi();
+      loadKota();
+      loadCabang();
     });
 
     return {
+      loadedKota,
+      loadedCabang,
+      loadedItinerari,
       loadedDestinasi,
+      KotaList,
+      CabangList,
       destinasi,
     };
   },

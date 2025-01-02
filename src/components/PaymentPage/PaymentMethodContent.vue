@@ -91,7 +91,7 @@
 
       <div
         style="outline: 0px solid #0077b6; border-radius: 5px"
-        v-for="passenger in passengerList"
+        v-for="(passenger, index) in passengerList"
         :key="passenger.id"
       >
         <div
@@ -101,7 +101,7 @@
           <span
             class="q-pl-lg"
             style="color: white; font-weight: 400; font-size: 1.5rem"
-            >Informasi Pelanggan Nomor 1</span
+            >Informasi Pelanggan Nomor {{ index + 1 }}</span
           >
         </div>
         <div class="row">
@@ -252,6 +252,30 @@
 
       <div style="outline: 0px solid #0077b6; border-radius: 5px">
         <div class="row q-my-sm">
+          <div class="col-12" style="margin-left: 25px; margin-top: 10px">
+            <q-select
+              filled
+              v-model="discounts"
+              use-input
+              multiple
+              :options="formattedDiscountList"
+              input-debounce="0"
+              label="Select Discount"
+              behavior="menu"
+            >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-grey">
+                    No results
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+          </div>
+        </div>
+      </div>
+      <div style="outline: 0px solid #0077b6; border-radius: 5px">
+        <div class="row q-my-sm">
           <div class="col-8" style="margin-left: 25px; margin-top: 10px">
             <div class="span">Harga Tiket</div>
             <div class="value">Rp.{{ jadwal.hargaTiket }}</div>
@@ -259,7 +283,7 @@
 
           <div class="col" style="margin-left: 25px; margin-top: 10px">
             <div class="span">Total Harga</div>
-            <div class="value">Rp.{{ jadwal.hargaTiket * passengerCount }}</div>
+            <div class="value">Rp.{{ calculateTotalPrice }}</div>
           </div>
         </div>
       </div>
@@ -305,7 +329,6 @@
           </q-btn>
         </div>
       </div>
-
       <!-- Modal for Terms and Conditions -->
       <q-dialog v-model="termsDialog" persistent>
         <q-card>
@@ -326,7 +349,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { v4 as uuidv4 } from "uuid";
 import CryptoJS from "crypto-js";
 
@@ -359,6 +382,8 @@ export default {
     const destinationKota = ref("");
     const method = ref("");
     const passengerList = ref([]);
+    const discountList = ref([]);
+    const discounts = ref([]);
 
     const hover = ref(false);
     const termsDialog = ref(false);
@@ -367,12 +392,32 @@ export default {
     const jadwal = ref("");
     const pembayaran = ref("");
     const loadedJadwal = ref(false);
+    let formattedDiscountList = ref([]);
 
     let paymentResponse = ref(null);
 
     const showTerms = () => {
       termsDialog.value = true; // Show the modal
     };
+
+    const totalDiskon = computed(() => {
+      let total = 0;
+      discounts.value.forEach((discount) => {
+        const discountData = discountList.value.find((d) => d.id === discount);
+        if (discountData) {
+          total += discountData.harga;
+        }
+      });
+      return total;
+    });
+
+    // Calculate total price
+    const calculateTotalPrice = computed(() => {
+      return (
+        jadwal.value.hargaTiket * passengerCount -
+        passengerCount * totalDiskon.value
+      );
+    });
 
     function generateSignature(body, clientId, requestId, requestTimestamp) {
       const jsonBody = JSON.stringify(body);
@@ -417,10 +462,30 @@ export default {
         console.log(jadwal.value);
         console.log(Number(jadwal.value.hargaTiket) * passengerCount);
         // Create the body for the API request
+
+        const discountValues = discounts.value.map(
+          (discount) => discount.value
+        );
+        const applicableDiscounts = discountList.value.filter((discount) =>
+          discountValues.includes(discount.id)
+        );
+        const totalDiscount = applicableDiscounts.reduce((total, discount) => {
+          return total + discount.harga; // Assuming harga is the discount amount
+        }, 0);
+
+        // Example values for calculation
+
+        // Step 3: Calculate the total price after applying discounts
+        const totalHarga =
+          passengerCount * Number(jadwal.value.hargaTiket) * passengerCount -
+          totalDiscount;
+
+        console.log(totalHarga);
+
         const body = {
           order: {
             invoice_number: `INV-${Date.now()}`, // Generate invoice number
-            amount: Number(jadwal.value.hargaTiket) * passengerCount, // Calculate total amount
+            amount: totalHarga, // Calculate total amount
           },
           virtual_account_info: {
             expired_time: 60,
@@ -477,6 +542,7 @@ export default {
           const updateBody = {
             ...existingPaymentData,
             metode: method.value, // Set the payment method
+            harga: totalHarga,
             status: "BELUM_BAYAR", // Set the payment method
             invoice: paymentResponse.value.data.order.invoice_number,
             expiredDate:
@@ -500,6 +566,7 @@ export default {
               departure: departureId,
               destination: destinationId,
               pembayaran: pembayaranId,
+              harga: calculateTotalPrice,
               passengerCount: passengerCount,
               date: date.value.toISOString(), // Convert date to ISO string if needed
               jadwalId: jadwalId, // Add the clicked jadwal's ID
@@ -527,15 +594,20 @@ export default {
         departureKota.value = departureKotaResponse.data; // Assuming the response has a 'kota' field
 
         const jadwalResponse = await api.get(`/jadwals/${jadwalId}`);
+        jadwal.value = jadwalResponse.data;
 
+        const discountResponse = await api.get(`/diskons`);
+        discountList.value = discountResponse.data;
+        formattedDiscountList.value = discountList.value.map((discount) => ({
+          label: discount.code, // Use 'nama' as the label
+          value: discount.id, // Use 'id' as the value
+        }));
         const pembayaranResponse = await api.get(
           `/pembayarans/${pembayaranId}`
         );
-        console.log(pembayaranId);
         pembayaran.value = pembayaranResponse.data;
 
         // Assign the filtered list to jadwalList
-        jadwal.value = jadwalResponse.data;
 
         const passengerResponse = await api.get(`/pemesanans`);
         const filteredPassengerList = passengerResponse.data.filter(
@@ -593,7 +665,6 @@ export default {
     onMounted(() => {
       fetchData();
     });
-
     return {
       departureLabel,
       destinationLabel,
@@ -605,15 +676,33 @@ export default {
       date,
       jadwal,
       formatDate,
+      discounts,
       pembayaran,
       hover,
       isOpen,
       termsDialog,
+      totalDiskon,
+      calculateTotalPrice,
+      formattedDiscountList,
       termsAccepted,
       showTerms,
       continuePayment,
       convertTimeToMinutes,
       formatToTwoDigits,
+      discountList,
+      filterFn(val, update, abort) {
+        if (val.length < 5) {
+          abort();
+          return;
+        }
+
+        update(() => {
+          const needle = val.toLowerCase();
+          options.value = stringOptions.filter(
+            (v) => v.toLowerCase().indexOf(needle) > -1
+          );
+        });
+      },
     };
   },
 };
