@@ -62,6 +62,7 @@
               id="ordererTelephone"
               name="ordererTelephone"
               v-model="telephone"
+              :class="{ 'is-invalid': !isValidPhoneNumber(telephone) }"
               style="
                 width: 100%;
                 padding: 10px;
@@ -69,6 +70,9 @@
                 border-radius: 5px;
               "
             />
+            <div v-if="!isValidPhoneNumber(telephone)" style="color: red">
+              Phone number must be max 12 digits.
+            </div>
           </div>
           <div class="q-py-sm">
             <span>Email:</span>
@@ -77,6 +81,7 @@
               id="ordererEmail"
               name="ordererEmail"
               v-model="email"
+              :class="{ 'is-invalid': !isValidEmail(email) }"
               style="
                 width: 100%;
                 padding: 10px;
@@ -84,6 +89,9 @@
                 border-radius: 5px;
               "
             />
+            <div v-if="!isValidEmail(email)" style="color: red">
+              Invalid email format.
+            </div>
           </div>
           <div class="q-py-sm">
             <span>Alamat Lengkap:</span>
@@ -279,6 +287,15 @@ export default {
       }
     };
 
+    const isValidEmail = (email) => {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailPattern.test(email);
+    };
+
+    const isValidPhoneNumber = (number) => {
+      const phonePattern = /^\d{1,12}$/; // Allows only digits and max 12 digits
+      return phonePattern.test(number);
+    };
     const formatDate = (date) => {
       const days = [
         "Minggu",
@@ -324,6 +341,15 @@ export default {
     };
 
     const forwardData = async () => {
+      if (!isValidEmail(email.value)) {
+        alert("Mohon menggunakan Email yang benar.");
+        return;
+      }
+
+      if (!isValidPhoneNumber(telephone.value)) {
+        alert("Mohon menggunakan Nomor Telepon yang benar(max 12 digits).");
+        return;
+      }
       const noInvoice = generateInvoiceNumber();
       const payload = {
         id: 0, // Assuming this will auto-increment on the server
